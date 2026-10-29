@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: incele-bulgu-yanit
+context:
+  scaffold_script: place-files.sh

@@ -1,0 +1,23 @@
+---
+name: kurulum
+description: Bir projeyi ekip-skills ile çalışmaya hazırlar; kısa proje profilini (CLAUDE.md), yığına göre yüklenen kural dosyalarını (.claude/rules/dotnet.md, flutter.md), doküman haritasını, sözlüğü ve öğrenim dosyasını oluşturur veya yerinde günceller; araç eksiklerini doktor betiğiyle raporlar. USE FOR — yeni proje başlangıcı, "projeyi kur", "projeyi hazırla", "CLAUDE.md hazırla", "kuralları oluştur", "setup", "init", "onboard this repo"; diğer skill'ler proje profilini bulamadığında. DO NOT USE FOR — kod yazma (`uygula`), profilde tek satırlık düzeltme (doğrudan düzenle).
+argument-hint: "[boş | güncelle]"
+---
+
+# Kurulum
+
+Amaç: diğer skill'lerin dayandığı proje gerçeklerini doğru yere, küçük parçalar halinde yazmak. Her oturumda yüklenen `CLAUDE.md` kısa kalır; yığına özgü kurallar `.claude/rules/` altında `paths:` ile yalnızca ilgili dosyalara dokunulunca yüklenir. Gerekçe: her oturumda okunan her satır token ve dikkat maliyetidir.
+
+## Adımlar
+1. **Araçları kontrol et.** `bash "${CLAUDE_PLUGIN_ROOT}/skills/kurulum/scripts/doktor.sh"` çalıştır; eksik araçları raporla. Betik çalıştırılamıyorsa `dotnet --version`, `flutter --version`, `git --version`, `gh --version` komutlarını tek tek dene.
+2. **Keşfet, sonra sor.** Yığını (`*.sln`/`*.csproj`, `pubspec.yaml`), derleme/test komutlarını (CI, Makefile, README), mevcut `CLAUDE.md`/`AGENTS.md`, `docs/`, state management paketini, test çerçevesini kendin bul. Kodda cevabı olan şeyi sorma. Eksikleri tek turda, numaralı ve önerili sorularla sor; "evet" öneriyi kabul eder.
+3. **Profili yaz: `CLAUDE.md` içinde `## Proje profili`, en fazla 40 satır.** Yalnızca her oturumda gereken gerçekler: ürün ve roller, yığın, komutlar, doküman haritası, onay gerektirenler. `<...>` alanları keşif veya cevapla dolar; bilinmeyen alan silinir. Mevcut blok varsa **yerinde** güncelle, ikinci blok açma. Şablon: `references/profil.md`.
+4. **Kural dosyalarını yaz.** `.claude/rules/dotnet.md`, `.claude/rules/veri.md` (PostgreSQL: sürüm, Türkçe arama, saat dilimi, PublicId), `.claude/rules/flutter.md` (yalnızca projede var olan yığın için) ve `.claude/rules/altyapi.md` (GitHub, ortamlar, Docker, VPS); hepsi `paths:` kapsamlı ve ≤ 60 satır. Şablonlar: `references/rules-dotnet.md`, `rules-veri.md`, `rules-flutter.md`, `rules-altyapi.md`. Hedef çerçeve LTS değilse (`net10.0` dışı) raporda "yükseltilecek" olarak yaz, kendiliğinden yükseltme. PostgreSQL'li .NET projesinde `references/kod/` altındaki üç başvuru sınıfını (`App.Common` ad alanını projeninkiyle değiştirerek) `src/<Proje>/Common/`'a, testlerini birim test projesine kopyala ve testleri çalıştır; ekibin cevaplarıyla `<...>` alanlarını doldur, projede olmayan kuralı sil. **Şablonlardaki alan örneklerini** (Kusur → `Defect`, `DefectMapper`, `defectAssigned` vb. — örnek alan "inşaat kusur tespiti"dir) projenin kendi sözlük terimleriyle değiştir; örnek terim kural dosyasında bırakılmaz. Ekip sabitleri şablonda hazır: kod İngilizce + Türkçe doc yorumu, eşleme kütüphanesi yasağı, üç test katmanı. Sorulacaklar: dal modeli, ortam adları, VPS/ters vekil, test çerçevesi, varsayılan kiracı saat dilimi, aranan metin alanları; çevrimdışı modül varsa kapsam, çakışma modeli (ekle-yalnız | rowversion+409) ve ön paket birimi.
+5. **Doküman iskeleti.** Yalnızca `docs/README.md` (harita), `docs/sozluk.md`, `docs/agent/ogrenimler.md` (boş başlık), `docs/agent/durum.md` (yalnızca başlık ve "Şu an: iş yok"; `devam` skill'indeki biçim) ve `docs/mesajlar.md` (backend ile mobilin ortak mesaj anahtarı sözleşmesi: anahtar · parametreler · tr · en; başlık ve iki örnek satır). Diğer klasörler ilk ihtiyaçta `belgele`/`planla` açar; boş klasör üretme.
+6. **Rapor.** Bulunanlar, sorulanlar, yazılan dosyalar ve satır sayıları, doktor çıktısındaki eksikler.
+
+## Referans dosyaları okunamazsa
+Şablonları hafızandan kısa tut: profil için yukarıdaki beş başlık, kural dosyası için çekirdek kurallardaki eşikler. Okunamadığını raporda belirt.
+
+## Yeniden çalıştırma (`güncelle`)
+Mevcut blokları ve kural dosyalarını oku, yalnızca değişen gerçekleri güncelle, kullanıcının elle yazdığı satırları koru, 40/60 satır sınırlarını aşanı bölmeyi öner.

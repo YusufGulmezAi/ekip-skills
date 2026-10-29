@@ -1,0 +1,23 @@
+name: tespit_mobil
+description: Daire kusur tespit uygulaması
+publish_to: 'none'
+version: 1.3.2+41
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.6.1
+  go_router: ^14.6.2
+  dio: ^5.7.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.4
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

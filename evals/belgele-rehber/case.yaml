@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: belgele-rehber
+context:
+  scaffold_script: place-files.sh

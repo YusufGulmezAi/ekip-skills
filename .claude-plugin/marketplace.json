@@ -1,0 +1,14 @@
+{
+  "name": "ekip-skills",
+  "owner": {
+    "name": "Ekip"
+  },
+  "plugins": [
+    {
+      "name": "ekip-skills",
+      "source": "./",
+      "description": ".NET (C#) ve Flutter (Dart) ekibi için uçtan uca çalışma yöntemi: netleştirme, tasarım, planlama, mimar yönetiminde uzman ajanlar, doğrulamalı uygulama, inceleme, dokümantasyon, yayın ve retro."
+    }
+  ],
+  "description": ".NET ve Flutter ekibi için Claude Code çalışma yöntemi"
+}

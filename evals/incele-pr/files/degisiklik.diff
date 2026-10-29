@@ -1,0 +1,47 @@
+diff --git a/src/Tespit.Api/Endpoints/KusurEndpoints.cs b/src/Tespit.Api/Endpoints/KusurEndpoints.cs
+index 3a1f2c0..9b7e4d1 100644
+--- a/src/Tespit.Api/Endpoints/KusurEndpoints.cs
++++ b/src/Tespit.Api/Endpoints/KusurEndpoints.cs
+@@ -12,6 +12,52 @@ public static class KusurEndpoints
+     public static void MapKusurEndpoints(this IEndpointRouteBuilder app)
+     {
+         var grup = app.MapGroup("/kusurlar").RequireAuthorization();
++
++        app.MapGet("/raporlar/acik-kusurlar", async (TespitDbContext db) =>
++        {
++            var liste = await db.Kusurlar
++                .IgnoreQueryFilters()
++                .Where(k => k.Durum == KusurDurumu.Acik)
++                .Select(k => new { k.Id, k.DaireNo, k.Kriter, k.Onem })
++                .ToListAsync();
++            return Results.Ok(liste);
++        });
++
++        grup.MapGet("/ara", async (string blok, TespitDbContext db) =>
++        {
++            var sonuc = await db.Kusurlar
++                .FromSqlRaw($"SELECT * FROM \"Kusurlar\" WHERE \"Blok\" = '{blok}'")
++                .ToListAsync();
++            return Results.Ok(sonuc);
++        });
++
++        grup.MapPost("/{id:guid}/bildir", async (Guid id, TespitDbContext db) =>
++        {
++            var kusur = await db.Kusurlar.FindAsync(id);
++            if (kusur is null) return Results.NotFound();
++
++            using var http = new HttpClient();
++            var yanit = http.PostAsJsonAsync("https://bildirim.local/gonder", new { kusur.Id }).Result;
++
++            kusur.BildirimGonderildi = yanit.IsSuccessStatusCode;
++            await db.SaveChangesAsync();
++            return Results.NoContent();
++        });
++
++        grup.MapGet("/{id:guid}", async (Guid id, TespitDbContext db) =>
++        {
++            var kusur = await db.Kusurlar.AsNoTracking().FirstOrDefaultAsync(k => k.Id == id);
++            return kusur is null ? Results.NotFound() : Results.Ok(kusur);
++        });
+     }
+ }
