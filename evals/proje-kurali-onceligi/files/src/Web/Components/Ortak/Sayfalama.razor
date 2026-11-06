@@ -1,0 +1,6 @@
+@* GB12: sayfa boyutu 10. *@
+<nav class="sayfalama">@Sayfa / @((Toplam + 9) / 10)</nav>
+@code {
+    [Parameter] public int Sayfa { get; set; } = 1;
+    [Parameter] public int Toplam { get; set; }
+}

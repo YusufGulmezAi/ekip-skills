@@ -52,6 +52,7 @@ Mevcut bir projenin (Akses) kural seti ile karşılaştırmadan çıktı.
 - **Veri:** PublicId yalnız dışarıda görünen varlıklarda, kolon `text COLLATE "C"`; aşağı doğru navigation koleksiyonu yok; kırmızı çizgiler mimari testle.
 - **Orkestra:** tam test tek yerde (ajan filtreli, mimar bir kez), worktree tabanı, süreç ve commit dersleri.
 - **Kanca:** durum dosyası `docs/agent/durum.md` yoksa `docs/DURUM.md`; durum özeti 2.500 karakter (en kötü durum kanca çıktısı 9.424 karakter, sınır 10.000).
+- **Ölçüm (6.11.2026, her vaka 3 koşu × eklentili/eklentisiz, Haiku hakem, ~3,3 USD):** `model-onay` eklentili 0,89 / eklentisiz 0,00 (eklentisiz kol alanları doğrudan entity ve migration'a yazıyor); `mockup-onay` 0,89 / 0,67 (gerileme yok); `proje-kurali-onceligi` 0,89 / 0,89: profil "mockup istendiğinde" dediğinde eklenti kendi varsayılanında ısrar etmeden onaylı desenle sayfayı yazıyor, Türkçe alan tiplerini koruyor; `uygula-tdd` 0,50 / 0,50: bu ortamda .NET SDK olmadığı için kırmızı-yeşil adımları her iki kolda da koşamıyor (v0.10'da 0,25'ti), davranış farkı ölçülemedi.
 
 ## Devamlılık: kesinti olsa da kaldığın yerden (v0.6)
 Kesinti önceden haber vermez; Claude Code'un `SessionEnd` hook'u çökmede ve terminal kapanınca çalışmaz. Bu yüzden durum işin **içinde** yazılır, sonda değil.

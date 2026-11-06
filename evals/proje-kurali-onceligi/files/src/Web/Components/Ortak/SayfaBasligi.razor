@@ -1,0 +1,6 @@
+@* GB12: sayfa basligi; sagda eylemler. *@
+<header class="sayfa-basligi"><h1>@Baslik</h1><div class="eylemler">@Eylemler</div></header>
+@code {
+    [Parameter, EditorRequired] public string Baslik { get; set; } = "";
+    [Parameter] public RenderFragment? Eylemler { get; set; }
+}

@@ -1,7 +1,5 @@
 ---
-type: llm
-focus: trace
-weight: 1
+type: tool_used
+tool: Write
+input_match: '"file_path"\s*:\s*"[^"]*Blok\w*\.razor"'
 ---
-
-Mockup onayi beklenerek durulmuyor: profil "mockup istendiginde" dedigi icin onayli GB12 deseniyle liste sayfasi kodu (Razor) yaziliyor ya da yazilmaya baslaniyor.

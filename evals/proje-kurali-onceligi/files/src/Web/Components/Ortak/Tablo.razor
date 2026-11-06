@@ -1,0 +1,10 @@
+@typeparam TSatir
+@* GB12: tablo; satira tiklayinca SatirAdresi'ne gider. *@
+<table class="tablo"><thead><tr>@Basliklar</tr></thead>
+<tbody>@foreach (var s in Satirlar) { <tr data-adres="@SatirAdresi(s)">@Hucreler(s)</tr> }</tbody></table>
+@code {
+    [Parameter, EditorRequired] public IReadOnlyList<TSatir> Satirlar { get; set; } = [];
+    [Parameter, EditorRequired] public RenderFragment Basliklar { get; set; } = default!;
+    [Parameter, EditorRequired] public RenderFragment<TSatir> Hucreler { get; set; } = default!;
+    [Parameter, EditorRequired] public Func<TSatir, string> SatirAdresi { get; set; } = default!;
+}
