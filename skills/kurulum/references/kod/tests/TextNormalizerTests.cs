@@ -3,29 +3,56 @@ using Xunit;
 
 namespace App.Common.Tests;
 
-/// <summary>Türkçe arama normalleştirmesinin sınır durumları.</summary>
+/// <summary>Türkçe arama normalleştirmesi: ı↔I ve i↔İ ayrı harf çiftleri, şapka sadeleşir.</summary>
 public class TextNormalizerTests
 {
     [Theory]
     [InlineData("isparta", "isparta")]
-    [InlineData("Isparta", "isparta")]
-    [InlineData("ISPARTA", "isparta")]
-    [InlineData("ısparta", "isparta")]
-    [InlineData("Işık", "isik")]
-    [InlineData("IŞIK", "isik")]
-    [InlineData("ışık", "isik")]
-    [InlineData("isik", "isik")]
+    [InlineData("İsparta", "isparta")]
+    [InlineData("İSPARTA", "isparta")]
+    [InlineData("ısparta", "ısparta")]
+    [InlineData("Isparta", "ısparta")]
+    [InlineData("ISPARTA", "ısparta")]
     [InlineData("İzmir", "izmir")]
-    [InlineData("IZMIR", "izmir")]
-    [InlineData("izmir", "izmir")]
-    [InlineData("Çağrı Öğüt", "cagri ogut")]
-    [InlineData("ŞİŞLİ", "sisli")]
-    [InlineData("  çok   boşluklu\tmetin ", "cok bosluklu metin")]
-    [InlineData("Kâğıt", "kagit")]
+    [InlineData("İZMİR", "izmir")]
+    [InlineData("IZMIR", "ızmır")]
+    [InlineData("Işık", "ışık")]
+    [InlineData("IŞIK", "ışık")]
+    [InlineData("Çağrı Öğüt", "çağrı öğüt")]
+    [InlineData("ŞİŞLİ", "şişli")]
+    [InlineData("Kâzım", "kazım")]
+    [InlineData("KÂZIM", "kazım")]
+    [InlineData("Kâğıt", "kağıt")]
+    [InlineData("Îmar Ûmit", "imar umit")]
     [InlineData("i\u0307stanbul", "istanbul")] // ayrışık İ (i + birleşik nokta)
-    [InlineData("Café Ünlü", "cafe unlu")]
-    public void ForSearch_TurkishVariants_ProduceSameForm(string input, string expected) =>
+    [InlineData("I\u0307zmir", "izmir")] // ayrışık İ (I + birleşik nokta)
+    [InlineData("  çok   boşluklu\tmetin ", "çok boşluklu metin")]
+    public void ForSearch_ProducesTurkishLowerForm(string input, string expected) =>
         Assert.Equal(expected, TextNormalizer.ForSearch(input));
+
+    /// <summary>Kullanıcının arama tablosu (Yusuf, 06.11.2026): terim kayıtta geçiyor mu.</summary>
+    [Theory]
+    [InlineData("isparta", "isparta", true)]
+    [InlineData("isparta", "İsparta", true)]
+    [InlineData("isparta", "İSPARTA", true)]
+    [InlineData("isparta", "ISPARTA", false)]
+    [InlineData("isparta", "Isparta", false)]
+    [InlineData("ısparta", "ısparta", true)]
+    [InlineData("ısparta", "Isparta", true)]
+    [InlineData("ısparta", "ISPARTA", true)]
+    [InlineData("ısparta", "isparta", false)]
+    [InlineData("ısparta", "İSPARTA", false)]
+    [InlineData("izmir", "İzmir", true)]
+    [InlineData("izmir", "İZMİR", true)]
+    [InlineData("izmir", "IZMIR", false)]
+    [InlineData("IZMIR", "İzmir", false)]
+    [InlineData("IZMIR", "ızmır", true)]
+    [InlineData("cagri", "Çağrı", false)]
+    [InlineData("çağrı", "ÇAĞRI", true)]
+    [InlineData("kazım", "Kâzım", true)]
+    [InlineData("KAZIM", "Kâzım", true)]
+    public void SearchTable_MatchesTurkishRules(string term, string record, bool expected) =>
+        Assert.Equal(expected, TextNormalizer.ForSearch(record).Contains(TextNormalizer.ForSearch(term), StringComparison.Ordinal));
 
     [Theory]
     [InlineData(null)]

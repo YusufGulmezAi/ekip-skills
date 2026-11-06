@@ -19,7 +19,7 @@
 - DI yaşam süresi uyumsuzluğu (singleton içinde scoped); `new` ile elle kurulan bağımlılık.
 - Nullable uyarılarının `!` ile susturulması.
 - `DateTime.Now` (saat dilimi) → `TimeProvider` / UTC.
-- Türkçe metin: kültürsüz `ToLower()`/`ToUpper()`/`string.Compare`; aramada `ILIKE`, `lower()` ya da nondeterministic collation; normalleştirilmiş `<Alan>Search` sütunu yerine ham sütunda `Contains`/`Like` (kural: `veri.md`).
+- Türkçe metin: kültürsüz `ToLower()`/`ToUpper()`/`string.Compare`; aramada `ILIKE`, `lower()` ya da nondeterministic collation; normalleştirilmiş `<Alan>Search` sütunu yerine ham sütunda `Contains`/`Like`; ı/i ya da ç/c'yi birbirine katlayan normalleştirme ("isparta" ISPARTA'yı bulmamalı, "cagri" Çağrı'yı bulmamalı; kural: `veri.md`).
 - Tarih filtresi: `<= 23:59:59`, `.Date ==` karşılaştırması, UTC günüyle filtre ya da gruplama, sabit `+3` ofset; yarı açık aralık `LocalDateRange.ToUtc` ile olmalı. Anda `timestamp without time zone`.
 - Dışarı açılan `Guid` (rota, DTO, bağlantı) → `PublicId`; `PublicId` üretiminde `Random`/sayaç/Guid türetmesi; benzersiz indeks ya da `CHECK` eksikliği; kolon `char(10)` ya da collation'sız (`text COLLATE "C"` olmalı).
 - Ebeveynde aşağı doğru navigation koleksiyonu (`ICollection<Child>`) gerekçesiz; modüller arası erişim sözleşme katmanı dışından; kırmızı çizgiyi (kiracı filtresi, modül sınırı) zorlayan mimari test yok ya da izin listesine gerekçesiz satır eklenmiş.

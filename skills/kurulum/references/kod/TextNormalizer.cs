@@ -3,8 +3,9 @@ using System.Text;
 namespace App.Common;
 
 /// <summary>
-/// Türkçe metni arama için tek biçime indirger: küçük harf, aksansız (ç→c, ğ→g, ı/İ/I→i, ö→o, ş→s, ü→u, â/î/û→a/i/u),
-/// sadeleştirilmiş boşluk. Kayıttaki <c>&lt;Alan&gt;Search</c> sütunu ve arama terimi aynı fonksiyondan geçer.
+/// Türkçe metni arama için tek biçime indirger: Türkçe kurala göre küçük harf (I→ı, İ→i; ı/i ve ç/ş/ğ/ö/ü ayrı harf olarak
+/// kalır), şapka sadeleşir (â→a, î→i, û→u), boşluk sadeleşir. "isparta" ISPARTA'yı bulmaz, "ısparta" bulur; "IZMIR" İzmir'i bulmaz.
+/// Kayıttaki <c>&lt;Alan&gt;Search</c> sütunu ve arama terimi aynı fonksiyondan geçer.
 /// Kültüre ve ICU'ya bağlı değildir: ICU'suz konteynerde (InvariantGlobalization) de aynı sonucu verir.
 /// </summary>
 public static class TextNormalizer
@@ -24,6 +25,12 @@ public static class TextNormalizer
             if (char.IsWhiteSpace(ch))
             {
                 pendingSpace = true;
+                continue;
+            }
+
+            if (ch == '\u0307' && builder.Length > 0 && builder[^1] == 'ı')
+            {
+                builder[^1] = 'i'; // ayrışık İ: "I" + birleşik nokta
                 continue;
             }
 
@@ -54,18 +61,15 @@ public static class TextNormalizer
     /// <summary>"İçerir" araması için hazır desen: <c>%terim%</c>.</summary>
     public static string ContainsPattern(string? term) => $"%{EscapeLike(ForSearch(term))}%";
 
-    /// <summary>Tek karakteri katlar; atlanacak birleşik işaret için <c>'\0'</c> döner.</summary>
+    /// <summary>Tek karakteri Türkçe kurala göre küçültür; atlanacak birleşik işaret için <c>'\0'</c> döner.</summary>
     private static char Fold(char ch) => ch switch
     {
-        'I' or 'İ' or 'ı' or 'i' or 'Î' or 'î' or 'Í' or 'í' or 'Ì' or 'ì' or 'Ï' or 'ï' => 'i',
-        'Ç' or 'ç' => 'c',
-        'Ğ' or 'ğ' => 'g',
-        'Ö' or 'ö' or 'Ó' or 'ó' or 'Ò' or 'ò' or 'Ô' or 'ô' => 'o',
-        'Ş' or 'ş' => 's',
-        'Ü' or 'ü' or 'Û' or 'û' or 'Ú' or 'ú' or 'Ù' or 'ù' => 'u',
-        'Â' or 'â' or 'Á' or 'á' or 'À' or 'à' or 'Ä' or 'ä' => 'a',
-        'É' or 'é' or 'È' or 'è' or 'Ê' or 'ê' or 'Ë' or 'ë' => 'e',
-        >= '̀' and <= 'ͯ' => '\0', // birleşik aksan (ör. "i̇" içindeki nokta)
+        'I' => 'ı',
+        'İ' => 'i',
+        'Â' or 'â' => 'a',
+        'Î' or 'î' => 'i',
+        'Û' or 'û' => 'u',
+        '\u0302' or '\u0307' => '\0', // ayrışık şapka ve nokta ("i̇" içindeki nokta İ'den gelir)
         _ => char.ToLowerInvariant(ch),
     };
 }
