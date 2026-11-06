@@ -7,7 +7,7 @@ paths: ["**/*.cs", "**/*.csproj", "**/*.sln", "**/*.slnx"]
 # .NET kuralları
 
 ## Dil ve açıklama
-- Kod İngilizce: tür, üye, parametre, dosya, tablo ve kolon adları. Alan terimi eşlemesi `docs/sozluk.md` (Kusur → `Defect`, Mahal → `Room`, Müşavir → `Consultant`).
+- Adlandırma <İngilizce + sözlük | Türkçe alan tipleri>. İngilizce: tür, üye, dosya, tablo ve kolon adları İngilizce, alan terimi eşlemesi `docs/sozluk.md` (Kusur → `Defect`). Türkçe alan tipleri: hukuki/alan terimleri Türkçe (`BagimsizBolum`, `ArsaPayi`), altyapı tipleri İngilizce (`IUrlAddressable`); veri tabanı nesneleri <snake_case dil>.
 - Her public tür ve üyede Türkçe XML doc: `/// <summary>Müşavirin kusuru onaylayıp müteahhide iletmesi.</summary>`. `<param>`/`<returns>` yalnızca açıklama gerektiriyorsa. Bu yorumlar API başvurusunu ve eğitim dokümanlarını besler; boş veya İngilizce `<summary>` bulgu sayılır.
 - Kullanıcıya dönen hiçbir metin kodda düz string değil (bkz. Yerelleştirme).
 
@@ -30,10 +30,15 @@ paths: ["**/*.cs", "**/*.csproj", "**/*.sln", "**/*.slnx"]
 
 ## Düzen
 - Solution: <Clean | Vertical Slice>; `src/<Project>/`, `tests/<Project>.UnitTests/`, `tests/<Project>.IntegrationTests/`, `tests/<Project>.SecurityTests/`.
-- Katmanlar / dilimler: <Domain, Application, Infrastructure, Api | Features/<Area>/>.
+- Katmanlar / dilimler: <Domain, Application, Infrastructure, Api | Features/<Area>/>. Modüller birbirine yalnız sözleşme katmanı (`Contracts`) üzerinden erişir.
+- Bu sınırlar mimari testle zorlanır (<NetArchTest | ArchUnitNET>): katman yönü, modül sınırı, `IgnoreQueryFilters` izin listesi. Listeye satır eklemek güvenlik kararıdır; testin kaynak kümesinin boş olmadığı ayrıca doğrulanır.
+
+## Web (Blazor varsa)
+- Render modu <statik SSR (varsayılan) | Interactive Server>; sayfalar ham kontrol yazmaz, ortak bileşen kütüphanesini kullanır; bileşen onayı canlı katalog sayfasında. Bilinen tuzaklar: `ekip-skills` `incele/references/blazor-ssr.md`.
 
 ## Veri ve güvenlik
-- Çok kiracılı: her kiracılı varlıkta global query filter; `IgnoreQueryFilters()` yalnızca karar kaydıyla.
+- Çok kiracılı: her kiracılı varlıkta global query filter; `IgnoreQueryFilters()` yalnızca karar kaydı ve mimari testteki izin listesiyle.
+- Aşağı doğru navigation koleksiyonu yok (`Site.Blocks`); alt kayıt üst kayda referans verir, ilişki şemada (gerekirse bileşik) yabancı anahtarla. İstisna: ebeveyniyle birlikte yüklenen sınırlı küme, gerekçesi yazılır.
 - `AsNoTracking` okuma sorgularında; döngüde sorgu yok; `CancellationToken` her async çağrıda; `DateTime.Now` yerine `TimeProvider`/UTC. Türkçe arama, saat dilimi, PublicId ve sürüm: `veri.md`.
 - Her uç nokta yetkili grupta; rol kontrolü uç noktada. `FromSqlRaw` ile interpolasyon yok. `HttpClient` istek başına değil (`IHttpClientFactory`).
 - Yapılandırma ortam değişkeni / user secrets; `appsettings.*.json` içinde sır yok (bkz. `altyapi.md`).

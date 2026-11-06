@@ -57,6 +57,14 @@ Her dönüşte, ajanın raporundan bağımsız olarak:
 3. **Dalı kapat.** Birleşen worktree'ler kaldırılır (`git worktree remove`, sonra `git worktree prune`); `main`'e PR kullanıcı kararıyla açılır; birleşen iş dalının silinmesi için onay istenir. Plan dosyası "tamamlandı" işaretlenir, `docs/agent/durum.md` "Şu an: iş yok"a döner. Gerekçe: kapanmamış dal ve worktree, bir sonraki işin kirli zeminidir.
 4. Kullanıcıya rapor: görev tablosu (durum, ajan, kanıt), açık sorular, retro için gözlemler (geri gönderilen teslimler, çakışmalar).
 
+## Alt ajan dersleri (sahada öğrenildi)
+- **Tam test tek yerde.** Ajan yalnız değişen alanın testlerini filtreli koşturur (+ derleme, biçim); tam paketi mimar kabulde **bir kez** çalıştırır, mümkünse arka planda başlatıp diff'i o sırada okur. Uzun test komutu `timeout` ile.
+- **Worktree tabanı.** Worktree'deki ajanın ilk adımı: `pwd` ile yeri doğrula, `git merge --ff-only <dal SHA>`, `git log -1` ile tabanı doğrula (`reset --hard` izinle engellenebilir).
+- **Git işi için bitmiş ajan uyandırılmaz;** yeni ajan başlatılır. Aynı ekrandaki küçük revizyon ise aynı ajana gider (belgeleri yeniden okumasın).
+- **Süreçler:** ajan uygulamayı ayrı bir portta başlatır ve yalnız kendi PID'ini durdurur; ada göre toplu `kill`/`taskkill` yok.
+- **Commit'te yalnız kendi dosyaların:** ajan çalışırken mimar `git commit -a` kullanmaz; dosyaları adıyla ekler. Ajanın arka plan derlemesi bitmeden tam test başlatılmaz.
+- **Aynı çalışma kopyasında iki yazan ajan aynı anda yok;** paralellik worktree ile.
+
 ## Durum panosu
 Plan dosyası tek doğruluk kaynağıdır; her kabul edilen görev satırı güncellenir:
 ```

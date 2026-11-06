@@ -10,7 +10,7 @@ argument-hint: "[yapılacak iş]"
 
 ## Akış
 1. **Bitti ölçütü** tek cümle. İstek belirsizse ve cevap sonucu değiştirecekse `sorgula`'ya geç. İş birden fazla katmana (API + mobil) dokunuyorsa önce `planla`; nedeni bilinmeyen hata ise `hata-ayikla`.
-2. **Ekran işinde onay şartı.** Görev bir ekran veya arayüz parçasıysa `tasarla`'nın aktarım notundaki `Onay:` satırını kontrol et; "bekliyor" ise ya da not yoksa kodlama, kullanıcıya mockup onayını hatırlat ve dur. Onay varsa mockup'a birebir uy; sapma gerekiyorsa açık soru.
+2. **Onay şartı: ekran ve veri modeli.** Ekran işinde profildeki onay yüzeyine bak (varsayılan mockup): `tasarla` aktarım notundaki `Onay:` satırı "bekliyor" ise ya da not yoksa kodlama, onayı hatırlat ve dur. Profil "mockup istendiğinde" diyorsa onaylı desen ve spesifikasyon maddesi (atfıyla) yeterlidir; yeni düzen yine sorulur. Entity, şema ya da migration gerektiren görevde onaylı model önerisi (alanlar ve nedenleri, ilişkiler, kısıtlar, kapsam dışı) yoksa öneriyi yaz, onay iste, dur. Onay varsa birebir uy; sapma gerekiyorsa açık soru.
 3. **Mevcut deseni oku.** Varsa `docs/agent/ogrenimler.md` (geçmiş işlerden çıkarılan kurallar), değişecek yerin çevresi, aynı işi yapan başka kod, test düzeni. Yeni kod bunlara uysun; proje CLAUDE.md'sindeki komut ve düzen kuralları bu dosyadakilerin önüne geçer.
 4. **Önce test — yeni davranışta da.** Yeni davranış: beklenen davranışı tanımlayan testi yaz, **kaldığını gör**, sonra kodla (kırmızı-yeşil; kalmayan test hiçbir şey kanıtlamaz). Hata düzeltme: hatayı yeniden üreten testi yaz, kaldığını gör, sonra düzelt. İstisna gerekçeyle raporlanır: UI/platform/yapılandırma kodu, keşif amaçlı deneme (spike — sonunda ya silinir ya testle yeniden yazılır); bu durumlarda elle doğrulama adımı ver.
 5. **Küçük dosya.** Dokunduğun dosya eşiği aşıyorsa (C# ≤ 200, Dart widget ≤ 150 satır; `.claude/rules/` ayrıntı verir) yeni kodu oraya eklemek yerine bölünmüş yeni dosyaya yaz ve bölmeyi raporda belirt. Gerekçe: büyüyen dosya her okunuşta daha çok token ister ve paralel işte çakışma noktası olur.
@@ -40,5 +40,6 @@ Projenin kendi komutu (Makefile, betik, CI, CLAUDE.md) varsa onu kullan. Yoksa:
 - **Kanıt:** çalıştırılan komutlar ve sonuçları (geçti/kaldı, sayılar).
 - **Çalıştırılamayan:** doğrulayamadığın her şey ve nedeni; kullanıcının çalıştırması gereken komut.
 - **Dokunmadıklarım:** fark edilen ama kapsam dışı sorunlar.
+- **Yerelde bak (gerekiyorsa):** kullanıcının kendi makinesinde bakması gereken işte profildeki kabukta (Windows'ta PowerShell) kopyala-çalıştır tek blok: dalı al → servisleri adıyla başlat → migration (adı ve "veri silmez" notu) → uygulamayı başlat; ardından bakılacak adresler tablosu.
 - **Kural borcu:** proje kuralının bu işte uygulanmadığı yerler (hangi kural, hangi dosya/tablo, neden); yoksa "yok".
 - **Belge etkisi:** bu değişiklik hangi dokümanı bayatlattı ya da yeni doküman gerektiriyor (karar kaydı, kullanıcı rehberi, API başvurusu); yoksa "yok". Doluysa `belgele` bir sonraki adımdır. Gerekçe: doküman, kodu değiştiren kişi davranışı henüz hatırlarken en ucuza yazılır.

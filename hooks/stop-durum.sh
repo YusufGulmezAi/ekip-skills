@@ -11,16 +11,18 @@ git -C "$PROJE" rev-parse --is-inside-work-tree >/dev/null 2>&1 || exit 0
 degisen=$(git -C "$PROJE" status --porcelain 2>/dev/null | awk '{print $2}')
 [ -z "$degisen" ] && exit 0
 
-DURUM="$PROJE/docs/agent/durum.md"
+DURUM_REL="docs/agent/durum.md"
+[ -f "$PROJE/$DURUM_REL" ] || [ ! -f "$PROJE/docs/DURUM.md" ] || DURUM_REL="docs/DURUM.md"
+DURUM="$PROJE/$DURUM_REL"
 mtime() { stat -c %Y "$1" 2>/dev/null || stat -f %m "$1" 2>/dev/null || echo 0; }
 durum_t=0; [ -f "$DURUM" ] && durum_t=$(mtime "$DURUM")
 en_yeni=0
 for f in $degisen; do
-  [ "$f" = "docs/agent/durum.md" ] && continue
+  [ "$f" = "$DURUM_REL" ] && continue
   t=$(mtime "$PROJE/$f"); [ "$t" -gt "$en_yeni" ] && en_yeni=$t
 done
 [ "$en_yeni" -le "$durum_t" ] && exit 0
 
-sayi=$(printf '%s\n' "$degisen" | grep -vc '^docs/agent/durum.md$')
-printf '{"hookSpecificOutput":{"hookEventName":"Stop","additionalContext":"Bitirmeden önce docs/agent/durum.md dosyasını güncelle: commit edilmemiş %s dosya var ve durum dosyası bu değişikliklerden eski. Yaz: şu an hangi görev, son doğrulanan adım (komut ve sonuç), sonraki adım, açık sorular, commit edilmemiş dosyalar. 30 satırı geçme. Sonra bitirebilirsin."}}\n' "$sayi"
+sayi=$(printf '%s\n' "$degisen" | grep -vcx "$DURUM_REL")
+printf '{"hookSpecificOutput":{"hookEventName":"Stop","additionalContext":"Bitirmeden önce %s dosyasını güncelle: commit edilmemiş %s dosya var ve durum dosyası bu değişikliklerden eski. Yaz: şu an hangi görev, son doğrulanan adım (komut ve sonuç), sonraki adım, açık sorular, commit edilmemiş dosyalar. 30 satırı geçme. Sonra bitirebilirsin."}}\n' "$DURUM_REL" "$sayi"
 exit 0

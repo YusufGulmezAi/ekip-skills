@@ -14,6 +14,8 @@ Sorunlu kriter fotoğrafsız kaydedilemez; `flutter test test/features/tespit/` 
 - Sözleşme: `api/openapi.yaml` içindeki `PUT /tespitler/{id}/kriterler/{kriterId}` (G01'de sabitlendi)
 - Kararlar: docs/kararlar/0003-kusur-duzeyinde-akis.md
 - Kullanıcıdan alınan cevaplar: "Yok" seçeneği notsuz kaydedilebilir.
+- Proje kuralları: profilin çalışma tercihleri (adlandırma dili, ekran onayı) ve ilgili `.claude/rules/` maddeleri; eklenti varsayılanıyla çelişirse bunlar geçerli.
+- Veri modeli: entity/şema görevi ise onaylı model önerisinin yeri (yoksa görev briflenmez).
 - Tasarım: tuvaldeki "Telefon · Mahal tespiti" ekranı; koda aktarım notu aşağıda. Onay: <kişi>, <tarih> (onaysız mockup brife girmez).
 
 ## Sınırlar

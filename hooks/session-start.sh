@@ -5,13 +5,13 @@ set -u
 KOK="${CLAUDE_PLUGIN_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}"
 PROJE="${CLAUDE_PROJECT_DIR:-$PWD}"
 RULES="$KOK/rules/cekirdek.md"
-DURUM="$PROJE/docs/agent/durum.md"
+DURUM="$PROJE/docs/agent/durum.md"; [ -r "$DURUM" ] || DURUM="$PROJE/docs/DURUM.md"
 
 {
   [ -r "$RULES" ] && cat "$RULES"
   if [ -r "$DURUM" ]; then
-    printf '\n\n# Kaldığın yer (docs/agent/durum.md)\n'
-    head -c 3000 "$DURUM"
+    printf '\n\n# Kaldığın yer (%s)\n' "${DURUM#$PROJE/}"
+    head -c 2500 "$DURUM"
     if git -C "$PROJE" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
       dal=$(git -C "$PROJE" branch --show-current 2>/dev/null)
       kirli=$(git -C "$PROJE" status --porcelain 2>/dev/null | wc -l | tr -d ' ')

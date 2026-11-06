@@ -6,7 +6,7 @@ paths: ["**/*.cs", "**/*.sql", "**/Migrations/**", "**/compose*.y*ml"]
 ---
 # Veri kuralları: sürüm, Türkçe metin, zaman, genel kimlik
 
-**Mevcut projede:** bu kurallar sonradan geldiyse eski tablolar ve kod kendiliğinden uymaz. Dokunduğun tabloya/koda uygula; uymayan diğerlerini bitiş raporunda "kural borcu" olarak tek tek listele (sessizce kapsam daraltma yok). Toplu geçiş ayrı iş ve onayla.
+**Mevcut projede:** bu kurallar sonradan geldiyse eski tablolar ve kod kendiliğinden uymaz. Dokunduğun tabloya/koda uygula; uymayan diğerlerini bitiş raporunda "kural borcu" olarak tek tek listele (sessizce kapsam daraltma yok). Toplu geçiş ayrı iş ve onayla. Bir ADR bilinçli olarak farklı karar verdiyse bu borç değildir; raporda ADR'ye atıfla anılır.
 
 ## Sürümler
 - .NET 10 LTS (`net10.0`; destek 14.11.2028). SDK `global.json` ile sabit: `"version": "10.0.<yama>", "rollForward": "latestFeature", "allowPrerelease": false` (global.json yoksa CLI önizleme SDK'yı da seçebilir). EF Core 10, Npgsql.EntityFrameworkCore.PostgreSQL 10.x, PostgreSQL <18>. STS sürüm (11, 13) kullanılmaz; yeni LTS'e geçiş karar kaydıyla.
@@ -32,10 +32,10 @@ paths: ["**/*.cs", "**/*.sql", "**/Migrations/**", "**/compose*.y*ml"]
 - İstemciye an UTC (ISO 8601) gider, gösterim yerelde; istemci filtrede saat değil `DateOnly` gönderir.
 
 ## Genel kimlik (PublicId)
-- Her tabloda `Guid Id` (birincil anahtar, ilişkiler, iç kullanım) + `string PublicId`: tam 10 küçük ASCII harf `[a-z]{10}` (Türkçe harf yok), tablo içinde benzersiz.
+- URL'de, rotada, DTO'da ya da kullanıcıya referans olarak gösterilen her varlıkta `Guid Id` (birincil anahtar, ilişkiler, iç kullanım) + `string PublicId`: tam 10 küçük ASCII harf `[a-z]{10}` (Türkçe harf yok), tablo içinde benzersiz. Dışarı hiç çıkmayan tablolarda (bağlantı, geçmiş satırı) gerekmez.
 - URL, rota, DTO ve paylaşılan bağlantı yalnız `PublicId` kullanır; `Guid` dışarı verilmez. DTO'da alan adı `publicId`.
 - Üretim `PublicIdGenerator.New()`: `RandomNumberGenerator.GetInt32(26)` (kriptografik); `Random`, sayaç ya da Guid'den türetme yok — tahmin ve numaralandırma engellenir. 26^10 ≈ 1,4×10^14 değer.
-- Veri tabanı: `char(10)`, benzersiz indeks, `CHECK (public_id ~ '^[a-z]{10}$')`. Atama `SaveChanges` önleyicisinde; o indekste benzersizlik ihlali (`23505`) olursa yeni değerle en fazla 3 deneme. Oluşturulduktan sonra değişmez.
+- Veri tabanı: `text COLLATE "C"` (`char(10)` değil: boşlukla doldurur; yerel ayara bağlı collation karşılaştırmayı ve indeksi ortamdan ortama değiştirir), benzersiz indeks, `CHECK (public_id ~ '^[a-z]{10}$')`. Atama `SaveChanges` önleyicisinde; o indekste benzersizlik ihlali (`23505`) olursa yeni değerle en fazla 3 deneme. Oluşturulduktan sonra değişmez.
 - Rota: `/{publicId:regex(^[a-z]{{10}}$)}`; biçimsiz değer 404. Kiracı filtresi `PublicId` aramasında da geçerli: başka sitenin kimliği 404.
 - Çevrimdışı istemci kayıt kimliğini (UUID v7) üretir; `PublicId` sunucuda atanır ve senkron yanıtında döner.
 ```

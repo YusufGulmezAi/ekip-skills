@@ -1,6 +1,6 @@
 {
   "name": "ekip-skills",
-  "version": "0.10.1",
+  "version": "0.11.0",
   "description": ".NET (C#) ve Flutter (Dart) ekibi için uçtan uca çalışma yöntemi: netleştirme, tasarım, planlama, mimar yönetiminde uzman ajanlar, doğrulamalı uygulama, inceleme, dokümantasyon, yayın ve retro.",
   "author": {
     "name": "Ekip"

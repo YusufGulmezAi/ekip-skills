@@ -15,7 +15,7 @@ Her ekran için tek satır, tablo halinde: **kim** (rol), **nerede** (cihaz + or
 - **Dar (< 600 px, telefon):** tek sütun, alt gezinme, liste ve detay ayrı ekran.
 - **Orta (600–840 px, tablet dikey):** gezinme rayı, liste + detay yan yana.
 - **Geniş (> 840 px, tablet yatay ve web):** kalıcı menü, tablo, çok sütunlu form.
-Her ekranın birincil sınıfını envanterden çıkar; yalnızca o sınıf için tam tasarım, diğerleri için yerleşim notu. Ayrıntılı desenler: `references/pencere-siniflari.md`.
+Her ekranın birincil sınıfını envanterden çıkar; yalnızca o sınıf için tam tasarım, diğerleri için yerleşim notu. Ayrıntılı desenler: `references/pencere-siniflari.md`; web (Blazor) ekranlarında ayrıca `references/web-ilkeleri.md`.
 
 ## 3. Tasarım sistemi
 Profilde adı geçen sistemi kullan; yoksa kullanıcıya sor. Hiç yoksa küçük bir set öner (6–10 renk, 5–7 metin stili, 4 boşluk, 3 yarıçap) ve bunun geçici olduğunu söyle. Sistemin kuralı bağlamla çelişiyorsa (masaüstü öncelikli sistem + saha uygulaması) sessizce ezme; çelişkiyi karar sorusu yap.
@@ -26,7 +26,7 @@ Ekranda görünecek iş kurallarını (durum geçişleri, kim neyi onaylar, hang
 ## 5. Çiz
 **Yapay zekâ üretimi hissi veren hiçbir şey teslim edilmez; bu her platform için geçerlidir** (`references/mobil-ilkeler.md`, "Yapay zekâ üretimi görünümünden kaçınma" başlığı: mor-mavi gradyan, emoji simge, tek tip kart, her şeyi ortalama, uydurma istatistik, kalıp "hoş geldiniz" ekranı). Teslimden önce her ekranı bu listeyle kontrol et; bir madde varsa ekran bitmemiştir. Referans alınacak şey sektörün gerçek uygulamaları ve ürünün kendi verisidir, yapay zekâ üretimi örnek ekranlar değil. Mobil ve tablette ayrıca küçük bileşen, yoğun ekran ve canlı renk ilkeleri geçerlidir.
 
-**Gerektiğinde mockup:** tartışılacak, onaylatılacak veya ekibe/müşteriye gösterilecek her ekran için önce mockup üretilir (tasarım tuvali ya da HTML); kod ancak mockup onaylandıktan sonra. Küçük düzeltme (bir etiket, bir renk) mockup gerektirmez. Mockup gerçek pencere boyutunda (390 / 800 / 1280) ve gerçek yoğunlukta örnek veriyle; "Örnek veri" etiketi.
+**Onay yüzeyi profilde (varsayılan: önce mockup).** Varsayılanda tartışılacak, onaylatılacak veya ekibe/müşteriye gösterilecek her ekran için önce mockup üretilir (tasarım tuvali ya da HTML); kod ancak mockup onaylandıktan sonra. Profil "mockup istendiğinde" diyorsa mockup yalnız kullanıcı isteyince çizilir; öteki ekranlar onaylı desen ve spesifikasyonla kodlanır, onay çalışan ekranda yazılı alınır. İki durumda da mockup gerektirmeyenler: küçük düzeltme (bir etiket, bir renk) ve yerleşik desenin yeni örneği (mevcut bileşenlerle onaylı desende yeni ekran; `references/web-ilkeleri.md`). Mockup gerçek pencere boyutunda (390 / 800 / 1280) ve gerçek yoğunlukta örnek veriyle; "Örnek veri" etiketi.
 - Oturumda hangi araç varsa onu kullan (tasarım tuvali, Figma, HTML mockup); yoksa sor.
 - Gerçekçi örnek veri, "Örnek veri" olarak işaretli. Lorem ipsum yok.
 - Her ekran için şu durumları düşün, en az birini göster: boş, yükleniyor, hata, çevrimdışı, yetkisiz.

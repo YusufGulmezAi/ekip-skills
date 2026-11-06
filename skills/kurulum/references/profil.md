@@ -25,6 +25,13 @@
 - Issue: <sistem> · Etiketler: <...> · Dal: `<tür>/<no>-<ad>` · Commit: Conventional Commits (İngilizce başlık)
 - Kontrol noktası: tüm testler yeşilse iş dalına otomatik commit + push (`main`'e asla doğrudan). `main` korumalı: PR + 1 onay + CI. Ortamlar: <Development | Test | Demo | Production>. Ayrıntı: `.claude/rules/altyapi.md`
 
+### Çalışma tercihleri (eklenti varsayılanlarını bu proje için değiştirir)
+- Adlandırma: <İngilizce + sözlük (varsayılan) | Türkçe alan tipleri, İngilizce altyapı>
+- Ekran onayı: <önce mockup (varsayılan) | mockup istendiğinde; onaylı desen + spesifikasyonla kod, çalışan ekranda yazılı onay>; bileşen onayı: <mockup | canlı katalog sayfası>
+- Çalışma düzeni: <tek oturum (varsayılan) | mimar + geliştirici ajan: ana oturum kod yazmaz>
+- Git yetkisi: <temkinli (varsayılan): zorla push ve PR onaylı | geniş: push, PR ve `--force-with-lease` onaysız>; veri silen işlem her durumda onaylı
+- Durum dosyası: <docs/agent/durum.md | docs/DURUM.md> · Geliştirici kabuğu: <PowerShell | bash> (yerel deneme bloğu bu kabukta verilir)
+
 ### Onay gerektirenler
 Paket ekleme, migration üretme/uygulama, sözleşme değişikliği, yayın, veri silme.
 ```

@@ -21,7 +21,8 @@
 - `DateTime.Now` (saat dilimi) → `TimeProvider` / UTC.
 - Türkçe metin: kültürsüz `ToLower()`/`ToUpper()`/`string.Compare`; aramada `ILIKE`, `lower()` ya da nondeterministic collation; normalleştirilmiş `<Alan>Search` sütunu yerine ham sütunda `Contains`/`Like` (kural: `veri.md`).
 - Tarih filtresi: `<= 23:59:59`, `.Date ==` karşılaştırması, UTC günüyle filtre ya da gruplama, sabit `+3` ofset; yarı açık aralık `LocalDateRange.ToUtc` ile olmalı. Anda `timestamp without time zone`.
-- Dışarı açılan `Guid` (rota, DTO, bağlantı) → `PublicId`; `PublicId` üretiminde `Random`/sayaç/Guid türetmesi; benzersiz indeks ya da `CHECK` eksikliği.
+- Dışarı açılan `Guid` (rota, DTO, bağlantı) → `PublicId`; `PublicId` üretiminde `Random`/sayaç/Guid türetmesi; benzersiz indeks ya da `CHECK` eksikliği; kolon `char(10)` ya da collation'sız (`text COLLATE "C"` olmalı).
+- Ebeveynde aşağı doğru navigation koleksiyonu (`ICollection<Child>`) gerekçesiz; modüller arası erişim sözleşme katmanı dışından; kırmızı çizgiyi (kiracı filtresi, modül sınırı) zorlayan mimari test yok ya da izin listesine gerekçesiz satır eklenmiş.
 - Hedef çerçeve `net10.0` (LTS) değil ya da `global.json` yok / `allowPrerelease: false` içermiyor.
 - Önizleme sürüm: `PackageReference` sürümünde `-preview`, `-rc`, `-beta`, `-alpha`; Dockerfile/compose'da `rc`/`beta`/`preview` etiketli imaj.
 - Günlükte interpolasyon (`$"..."`) yerine mesaj şablonu (CA2254).

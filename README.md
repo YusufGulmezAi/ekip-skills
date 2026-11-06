@@ -1,6 +1,6 @@
 # ekip-skills
 
-.NET (C#) ve Flutter (Dart) ekipleri için Claude Code çalışma yöntemi: 14 skill, 7 uzman ajan, 3 betik, 2 hook, oturum başı kural enjeksiyonu ve 15 senaryoluk eval seti.
+.NET (C#) ve Flutter (Dart) ekipleri için Claude Code çalışma yöntemi: 14 skill, 7 uzman ajan, 3 betik, 2 hook, oturum başı kural enjeksiyonu ve 22 senaryoluk eval seti.
 
 ## Akış
 ```
@@ -41,6 +41,17 @@ Küçük işte adımlar atlanır; kararlar ve kanıt atlanmaz.
 Mimar ana oturumdur. Ajanlar başka ajan başlatmaz, kullanıcıya soru soramaz; soruları mimar toplar. Aynı yığında paralel yazan ajanlar `isolation: "worktree"` ile ayrı kopyada çalışır.
 
 **Önemli:** Oturum başı hook'u ile gelen çekirdek kurallar alt ajanlara ulaşmaz (ölçüldü). Bu yüzden yazan ajanların her birinde kısa bir "Çalışma kuralları" bölümü var. Çekirdek kural değişirse `rules/cekirdek.md` ile birlikte `agents/*-gelistirici.md`, `test-yazari.md`, `belge-yazari.md` de güncellenir.
+
+## Proje kuralları ve profil seçenekleri (v0.11)
+Mevcut bir projenin (Akses) kural seti ile karşılaştırmadan çıktı.
+- **Proje kuralı önce gelir:** CLAUDE.md, `.claude/rules/`, profil ve ADR'ler eklentiyle çelişirse proje kazanır; gevşetilemeyen taban: sır commit'e girmez, veri silen işlem onaylı, kanıtsız "bitti" yok.
+- **Profilde çalışma tercihleri:** adlandırma (İngilizce + sözlük | Türkçe alan tipleri), ekran onayı (önce mockup varsayılan | mockup istendiğinde, onaylı desen + spesifikasyon), çalışma düzeni (tek oturum | mimar + geliştirici), git yetkisi (temkinli | geniş), durum dosyası yolu, geliştirici kabuğu. `kurulum` mevcut projede bunları projenin kendi kurallarından çıkarır.
+- **Veri modeli onay kapısı:** entity/şema değişikliği onaylı model önerisi (alanlar ve nedenleri, ilişkiler, kısıtlar, kapsam dışı) olmadan yazılmaz; `planla` ilk görev yapar, `uygula` ve geliştirici ajanı durur.
+- **Onay eşiği:** sormadan yapılanlar (yazım, belge, onaylı kararın mekanik uygulaması, test, spesifikasyona geri getiren düzeltme) ve sorulanlar tek listede.
+- **Blazor:** `incele/references/blazor-ssr.md` (statik SSR'da sahada yaşanmış form, kültür, DbContext, gelişmiş gezinti tuzakları), `tasarla/references/web-ilkeleri.md` (canlı katalogda bileşen onayı, teker teker inceleme, form yerleşimi sorusu, yerleşik desen istisnası).
+- **Veri:** PublicId yalnız dışarıda görünen varlıklarda, kolon `text COLLATE "C"`; aşağı doğru navigation koleksiyonu yok; kırmızı çizgiler mimari testle.
+- **Orkestra:** tam test tek yerde (ajan filtreli, mimar bir kez), worktree tabanı, süreç ve commit dersleri.
+- **Kanca:** durum dosyası `docs/agent/durum.md` yoksa `docs/DURUM.md`; durum özeti 2.500 karakter (en kötü durum kanca çıktısı 9.424 karakter, sınır 10.000).
 
 ## Devamlılık: kesinti olsa da kaldığın yerden (v0.6)
 Kesinti önceden haber vermez; Claude Code'un `SessionEnd` hook'u çökmede ve terminal kapanınca çalışmaz. Bu yüzden durum işin **içinde** yazılır, sonda değil.
