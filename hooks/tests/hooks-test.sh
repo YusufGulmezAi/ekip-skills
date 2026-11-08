@@ -43,11 +43,11 @@ case "$c" in *"tek dosya yaz"*) basari "stop: kullanıcı talimatı durum isteğ
 printf '%s' "$c" | "$PY" -c 'import json,sys; json.load(sys.stdin)' 2>/dev/null \
   && basari "stop: çıktı geçerli JSON" || hata "stop: çıktı geçerli JSON" "$c"
 
-yeni_proje; profil_yaz; isaret_yaz $((simdi - 100)); echo x >> "$P/a.txt"; durum_yaz docs/agent/durum.md $((simdi + 5))
+yeni_proje; profil_yaz; isaret_yaz $((simdi - 100)); echo x >> "$P/a.txt"; durum_yaz docs/agent/durum.md $((simdi + 3600))
 c=$(stop); [ -z "$c" ] && basari "stop: durum güncelse sessiz" || hata "stop: durum güncelse sessiz" "$c"
 
-yeni_proje; profil_yaz; durum_yaz docs/agent/durum.md $((simdi + 5)); isaret_yaz $((simdi - 100))
-echo z > "$P/docs/yeni.md"; touch -d "@$((simdi + 10))" "$P/docs/yeni.md"
+yeni_proje; profil_yaz; durum_yaz docs/agent/durum.md $((simdi + 3600)); isaret_yaz $((simdi - 100))
+echo z > "$P/docs/yeni.md"; touch -d "@$((simdi + 7200))" "$P/docs/yeni.md"
 c=$(stop); case "$c" in *"bu oturumda 1 dosya"*) basari "stop: izlenmeyen klasördeki yeni dosya sayılır, durum sayılmaz";;
   *) hata "stop: izlenmeyen klasördeki yeni dosya sayılır, durum sayılmaz" "$c";; esac
 

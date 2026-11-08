@@ -12,7 +12,7 @@ Kaynak: Akses ve fintech-core'da v0.12.0 kullanımı, 06–08.11.2026. Projelerd
 - **4.** `devam`: `docs/agent/durum.md` yoksa "dur" diyor; profildeki "Durum dosyası" satırını ve `docs/DURUM.md` geri dönüşünü okumalı.
 - **12.** Kanıt sırası: `--no-build` ile koşan takım eski ikiliyi sınar, sahte kırmızı/yeşil üretir (fintech-core D4). `uygula`/`orkestra`: önce derleme başarılı, sonra testler; derleme kırmızıysa testler başlamaz. Ayrıca: alt ajanın "geçti" raporu yetmez, ana oturum kendi komutuyla doğrular.
 
-## v0.13 — kurulum ve kural içeriği
+## v0.13 — kurulum ve kural içeriği — yapıldı (5–11, 13, 14)
 
 - **5.** `incele`: `ILike` + `tr-TR-x-icu` harf kuralı için doğru; yalnız şapka ve `%x%` indeksi eksikliği borçtur. "ILIKE kullanımı bulgu" genellemesi yapılmamalı.
 - **6.** Dosya boyu (C# 200, doküman 150): mevcut projede eşik yalnız yeni dosyalara; aşan eskiler borç listesinde, dokunulması bölmeyi zorunlu kılmaz. `kurulum` ve `incele`'ye yazılmalı.

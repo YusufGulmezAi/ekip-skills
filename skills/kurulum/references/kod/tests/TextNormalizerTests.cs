@@ -27,6 +27,8 @@ public class TextNormalizerTests
     [InlineData("i\u0307stanbul", "istanbul")] // ayrışık İ (i + birleşik nokta)
     [InlineData("I\u0307zmir", "izmir")] // ayrışık İ (I + birleşik nokta)
     [InlineData("  çok   boşluklu\tmetin ", "çok boşluklu metin")]
+    [InlineData("\U00010400", "\U00010428")] // temel düzlem dışı (Deseret): PostgreSQL küçültür, char döngüsü küçültmez
+    [InlineData("\U0001E900", "\U0001E922")] // temel düzlem dışı (Adlam)
     public void ForSearch_ProducesTurkishLowerForm(string input, string expected) =>
         Assert.Equal(expected, TextNormalizer.ForSearch(input));
 

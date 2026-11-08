@@ -1,0 +1,2 @@
+# Satır sonları: betikler LF (CRLF ile inen .sh WSL bash'te çalışmaz). Bu dosya BOM'suz UTF-8 kaydedilir.
+*.sh text eol=lf

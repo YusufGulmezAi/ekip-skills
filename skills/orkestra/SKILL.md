@@ -54,7 +54,7 @@ Her dönüşte, ajanın raporundan bağımsız olarak:
 ## 5. Kapanış
 1. Tüm iş için `incele`.
 2. Görevlerdeki "Belge" satırlarını toplayıp `belge-yazari`'ya ver; sonucu doğrula.
-3. **Dalı kapat.** Birleşen worktree'ler kaldırılır (`git worktree remove`, sonra `git worktree prune`); `main`'e PR kullanıcı kararıyla açılır; birleşen iş dalının silinmesi için onay istenir. Plan dosyası "tamamlandı" işaretlenir, `docs/agent/durum.md` "Şu an: iş yok"a döner. Gerekçe: kapanmamış dal ve worktree, bir sonraki işin kirli zeminidir.
+3. **Dalı kapat.** Belge ve durum commit'i PR açılmadan önce atılır (sonradan eklenen commit CI'ı yeniden başlatır). Birleşen worktree'ler kaldırılır (`git worktree remove`, sonra `git worktree prune`); `main`'e PR kullanıcı kararıyla açılır; birleşen iş dalının silinmesi için onay istenir. Plan dosyası "tamamlandı" işaretlenir, `docs/agent/durum.md` "Şu an: iş yok"a döner. Gerekçe: kapanmamış dal ve worktree, bir sonraki işin kirli zeminidir.
 4. Kullanıcıya rapor: görev tablosu (durum, ajan, kanıt), açık sorular, retro için gözlemler (geri gönderilen teslimler, çakışmalar).
 
 ## Alt ajan dersleri (sahada öğrenildi)

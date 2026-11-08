@@ -47,4 +47,4 @@ Her bulgu önce **doğrulanır** (kod okunarak ya da komutla), sonra karar veril
 **Belge kayması** — değişen modülü `kapsam:` satırında anan dokümanlar (`docs/**/*.md`) hâlâ doğru mu; yeni uç nokta/ekran için rehber veya karar kaydı gerekiyor mu; public API değiştiyse XML doküman yorumu/dartdoc güncel mi. Bayat doküman **Önemli** sayılır: kullanıcı ona güvenerek yanlış iş yapar.
 
 ## Boyut
-Değişen her dosya için çekirdek eşiklere bak (C# ≤ 200 satır, Dart widget ≤ 150, metot ≤ 30, `build()` ≤ 60). Aşan dosya **Önemli** bulgu: "bölünecek" ve önerilen bölme.
+Değişen her dosya için çekirdek eşiklere bak (C# ≤ 200 satır, Dart widget ≤ 150, metot ≤ 30, `build()` ≤ 60). Eşik yeni dosyalara uygulanır: yeni dosyada ya da bu diff'le eşiği ilk kez aşan dosyada **Önemli** bulgu ("bölünecek" ve önerilen bölme). Diff'ten önce de eşiği aşan dosya bulgu değildir (borç listesinde, doküman ≤ 150 dahil); diff onu belirgin büyüttüyse **Öneri**, borç listesine atıfla.

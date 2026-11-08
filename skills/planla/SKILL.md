@@ -19,6 +19,8 @@ Amaç: işi, bağımsız doğrulanabilen ve gerektiğinde paralel yürütülebil
 8. **Test üç katman.** Veri veya yetki değiştiren her dilimde `test` sahipli görev üç katmanı sayar: birim, entegrasyon, güvenlik (kiracı/yetki senaryoları `guvenlik-testi` kataloğundan).
 9. **Veri modeli önce.** Entity veya şema değiştiren dilimin ilk görevi `[sahip: dotnet] Model önerisi`dir: alanlar (ad, tip, zorunluluk ve **neden**), ilişkiler, kısıtlar (hangi iş kuralını şemada zorluyor), kapsam dışı. Onaylanmadan migration görevi dalgaya girmez. Gerekçe: yazılmış modeli değiştirmek (migration, veri göçü, bağımlı kod) öneriyi değiştirmekten kat kat pahalıdır.
 
+10. **Değişmezler bağlar.** `.claude/rules/degismezler.md` (kapsamsız, her oturumda yüklü) varsa plan ona uyar; para, kiracı ya da denetim değişmezine dokunan görev `Değişmez:` satırı taşır ve onay ister. Bunun için kod dosyası açılmaz.
+
 ## Görev satırı biçimi
 ```
 - [ ] G03 [P] [sahip: flutter] [bağlı: G01] Mahal tespit ekranı, kriter durumu kaydetme

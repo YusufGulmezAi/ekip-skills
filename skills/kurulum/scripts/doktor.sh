@@ -33,5 +33,15 @@ if [ -n "$(find . -maxdepth 3 -name pubspec.yaml 2>/dev/null | head -1)" ]; then
   kontrol "adb"            "adb --version"                 0 "Android SDK platform-tools"
   [ "$(uname)" = "Darwin" ] && kontrol "xcodebuild" "xcodebuild -version" 0 "iOS derlemesi için Xcode"
 fi
+# Depo dosyaları: BOM'lu .gitattributes ilk kuralı (ör. `* text=auto eol=lf`) etkisiz bırakır.
+if [ -f .gitattributes ] && [ "$(head -c3 .gitattributes | od -An -tx1 | tr -d ' \n')" = "efbbbf" ]; then
+  printf 'UYARI     %-16s %s\n' ".gitattributes" "BOM'lu: ilk kural etkisiz; BOM'suz yeniden yaz, sonra git add --renormalize ."
+fi
+# Windows'ta localhost önce IPv6 dener (bağlantı başına ~2 sn): yerel bağlantı dizesi 127.0.0.1 olmalı.
+case "$(uname -s 2>/dev/null)" in MINGW*|MSYS*|CYGWIN*)
+  lh=$(grep -rIlE 'Host=localhost' --include='appsettings*.json' --include='*.env' --include='.env*' --include='compose*.y*ml' \
+       --exclude-dir=bin --exclude-dir=obj --exclude-dir=node_modules --exclude-dir=.git . 2>/dev/null | head -3 | tr '\n' ' ')
+  [ -n "$lh" ] && printf 'UYARI     %-16s %s\n' "Host=localhost" "Windows'ta 127.0.0.1 kullan (IPv6 denemesi ~2 sn/bağlantı): $lh";;
+esac
 printf '\n%d OK, %d EKSIK\n' "$ok" "$eksik"
 [ "$eksik" -eq 0 ]

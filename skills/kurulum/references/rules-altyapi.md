@@ -10,6 +10,7 @@ paths: ["**/Dockerfile*", "**/docker-compose*.y*ml", "**/compose*.y*ml", ".githu
 - Dallar: `main` korumalı (doğrudan push yok, PR + 1 onay + CI yeşil); iş dalları `<tür>/<issue-no>-<kisa-ad>` (`feat/42-defect-assignment`, `fix/57-tenant-filter`).
 - Commit: Conventional Commits, İngilizce başlık, gövde Türkçe serbest: `feat(defects): add contractor assignment`. İş dalında her doğrulanmış adım küçük bir commit olabilir (`wip:` öneki serbest); `main`'e birleştirirken squash. Birleşen iş dalı onayla silinir, worktree kaldırılır, `durum.md` "iş yok"a döner. Gerekçe: commit edilmemiş iş kesintide kaybolur, worktree'ler arası taşınamaz; kapanmamış dal birikir.
 - Otomatik kayıt: derleme + biçim/analiz + var olan test katmanları tüm çözümde yeşilse iş dalına otomatik commit + push (`uygula` 8, öncesinde 7. adımdaki öz-inceleme); `main`'e doğrudan push, zorla push ve kırmızı testle push yok. `main`'e yalnız PR ile girilir.
+- **Belge commit'i PR'dan önce:** durum, plan ve belge güncellemeleri PR açılmadan önce dala commit edilir. PR açıldıktan sonra eklenen her commit CI'ı yeniden başlatır, koşan iş iptal olur.
 - PR şablonu `.github/PULL_REQUEST_TEMPLATE.md`: amaç, bitti ölçütü, kanıt (komut çıktısı), belge etkisi, güvenlik etkisi. `incele` bulguları kapanmadan birleştirilmez.
 - CI (`.github/workflows/`): her PR'da derleme, üç test katmanı, `dotnet format --verify-no-changes`, `flutter analyze`, `dotnet list package --vulnerable`, sözleşme kayması `oasdiff breaking <son-tag> <şimdi>` (kırıcı fark MAJOR artışı olmadan kırmızı); `main`'de ek olarak imaj üretimi. Sırlar yalnızca GitHub Secrets / Environments; workflow dosyasında düz metin yok.
 - Etiketler: `bug`, `feature`, `tech-debt`, `security`, `docs`; `CODEOWNERS` ile `src/**` ve `.claude/**` sahipleri.
@@ -24,6 +25,7 @@ paths: ["**/Dockerfile*", "**/docker-compose*.y*ml", "**/compose*.y*ml", ".githu
 ## Docker
 - Çok aşamalı Dockerfile (`sdk` → `aspnet` runtime); root olmayan kullanıcı; sabit taban imaj etiketi (`mcr.microsoft.com/dotnet/aspnet:10.0`, LTS); konteynerde `TZ=UTC`; `HEALTHCHECK`; imaj etiketi sürüm + commit (`api:1.4.0-a1b2c3d`), `latest` tek başına değil.
 - `compose.yaml` yerel geliştirme için (api + <PostgreSQL 18 | veri tabanı> + opsiyonel yönetim aracı; PostgreSQL ICU ile kurulur: `POSTGRES_INITDB_ARGS=--locale-provider=icu --icu-locale=tr-TR`, `pg_trgm` eklentisi migration'da); `compose.<env>.yaml` ortam farkları. Veri `volumes` ile; `.dockerignore` zorunlu.
+- Yerel bağlantı dizesi `Host=127.0.0.1`, `localhost` değil: Windows'ta `localhost` önce IPv6 (`::1`) dener, bağlantı başına ~2 sn kaybolur (Akses akış testleri 1 sa → 8 dk). Doktor betiği uyarır.
 - İmaj içinde sır yok; migration imaj başlangıcında değil, `yayin` adımında ayrı komutla.
 
 ## VPS
