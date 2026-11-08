@@ -40,7 +40,7 @@ Yapı düzdür: ajanlar başka ajan başlatmaz. Claude Code iç içe delegasyona
 ## 3. Teslim: güven ama doğrula
 Her dönüşte, ajanın raporundan bağımsız olarak:
 1. **Diff'i oku.** Rapor ile diff uyuşmuyorsa teslim reddedilir.
-2. **Kanıtı kendin üret.** Görevin bitti ölçütünü kanıtlayan komutu ana oturumda çalıştır.
+2. **Kanıtı kendin üret.** Görevin bitti ölçütünü kanıtlayan komutu ana oturumda çalıştır; ajanın "geçti" raporu yetmez. Sıra: önce derleme başarılı, sonra testler; derleme kırmızıysa testler başlamaz, teslim reddedilir. `--no-build` yalnız aynı zincirde başarılı derlemeden sonra (`dotnet build && dotnet test --no-build`): tek başına eski ikiliyi sınar, sahte kırmızı/yeşil üretir.
 3. **Kapsam:** brifte izin verilen klasörlerin dışına çıkılmış mı?
 4. **Soru döndüyse:** kullanıcıya sor, cevabı aynı ajana ilet.
 5. **Kabul:** worktree ise dalı birleştir; etkilenen çözümü derle ve test et; plan dosyasında görevi işaretle ve `docs/agent/durum.md`'yi güncelle (hangi dalga, hangi görevler kabul edildi, hangileri açık, açık sorular).

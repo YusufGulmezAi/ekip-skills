@@ -4,7 +4,7 @@ Kaynak: Akses ve fintech-core'da v0.12.0 kullanımı, 06–08.11.2026. Projelerd
 
 > Numaralar kaynak listedeki sırayı korur (12 v0.12.1'e alındı); madde atıfları bu numaralarla yapılır.
 
-## v0.12.1 — hook'lar ve süreç (öncelikli)
+## v0.12.1 — hook'lar ve süreç (öncelikli) — yapıldı (1, 2, 3, 4, 12)
 
 - **1.** Stop hook kurulmamış projede de devreye giriyor (fintech-core): ne "## Proje profili" ne durum dosyası varken ve değişiklikler oturumdan önce varken `durum.md` yazdırmaya çalıştı. Düzeltme: profil ya da durum dosyası yoksa sessiz kal; yalnız bu oturumda değişen dosyaları say (oturum başı zaman damgası).
 - **2.** Stop hook "30 satırı geçme" diye sabit sınır söylüyor (Akses'te sınır 60). Düzeltme: "projenin durum dosyası kuralına uy (yoksa ≤ 30 satır)". Yalnız öneri dosyası yazan tasarım oturumunda da durum istemesi kullanıcının "tek dosya yaz" talimatıyla çatışıyor.

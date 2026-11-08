@@ -9,13 +9,13 @@ argument-hint: "[boş | plan dosyası]"
 Amaç: önceki oturumun bıraktığı iddiaya değil, kanıta dayanarak devam etmek. Durum dosyası "test geçti" diyor olabilir; yeni oturumda bunu yeniden görmeden ilerlemek, yarım kalmış ya da bozuk bir işin üstüne inşa etmektir.
 
 ## Adımlar
-1. **Durumu oku.** `docs/agent/durum.md` (yoksa dur: "durum dosyası yok, hangi işe devam edelim?"), `git status` ve `git log -5 --oneline`, durumda anılan plan dosyası (`docs/planlar/...`) ve plan panosundaki açık görevler.
+1. **Durumu oku.** Durum dosyası: profildeki (`CLAUDE.md` → `## Proje profili`) "Durum dosyası:" satırı; satır yoksa `docs/agent/durum.md`, o da yoksa `docs/DURUM.md`. Hiçbiri yoksa dur: "durum dosyası yok, hangi işe devam edelim?". Ayrıca `git status` ve `git log -5 --oneline`, durumda anılan plan dosyası (`docs/planlar/...`) ve plan panosundaki açık görevler.
 2. **Tutarlılık kontrolü.** Durum dosyasındaki "commit edilmemiş dosyalar" listesi ile `git status` örtüşüyor mu? Örtüşmüyorsa (kesintiden sonra elle değişiklik, başka dal) farkı kullanıcıya göster, varsayım yapma.
 3. **Son adımı yeniden kanıtla.** Durumdaki "son doğrulanan adım" komutunu çalıştır (derleme/test). Geçmiyorsa durum dosyası yanlış ya da kesinti yarım bıraktı: önce bunu düzelt, ilerleme yok.
 4. **Sonraki adımı öner.** Durum + plan panosundan tek bir sonraki adım, bitti ölçütüyle; "evet" ile kabul edilecek biçimde sor. Açık sorular varsa önce onları.
 5. **Devret.** Onaydan sonra ilgili skill'e geç (`uygula`, `orkestra`, `incele`). Durum dosyasının güncellenmesi o skill'in sorumluluğudur.
 
-## Durum dosyası biçimi (`docs/agent/durum.md`, ≤ 30 satır)
+## Durum dosyası biçimi (varsayılan `docs/agent/durum.md`, ≤ 30 satır; proje kuralı başka yol ya da sınır verebilir)
 ```markdown
 # Durum — 2026-10-28 21:40
 **Şu an:** G03 Mahal tespit ekranı (docs/planlar/2026-10-28-tespit.md), dal `feat/42-room-inspection`
