@@ -33,9 +33,14 @@ if [ -n "$(find . -maxdepth 3 -name pubspec.yaml 2>/dev/null | head -1)" ]; then
   kontrol "adb"            "adb --version"                 0 "Android SDK platform-tools"
   [ "$(uname)" = "Darwin" ] && kontrol "xcodebuild" "xcodebuild -version" 0 "iOS derlemesi için Xcode"
 fi
-# Depo dosyaları: BOM'lu .gitattributes ilk kuralı (ör. `* text=auto eol=lf`) etkisiz bırakır.
-if [ -f .gitattributes ] && [ "$(head -c3 .gitattributes | od -An -tx1 | tr -d ' \n')" = "efbbbf" ]; then
-  printf 'UYARI     %-16s %s\n' ".gitattributes" "BOM'lu: ilk kural etkisiz; BOM'suz yeniden yaz, sonra git add --renormalize ."
+# Depo dosyaları: UTF-16 .gitattributes (PowerShell 5.1 `>`/Out-File) hiçbir kuralı uygulatmaz; UTF-8 BOM'u
+# git 2.56 atlar (ölçüldü), yine de BOM'suz yazılır.
+if [ -f .gitattributes ]; then
+  bas=$(head -c3 .gitattributes | od -An -tx1 | tr -d ' \n')
+  case "$bas" in
+    fffe*|feff*) printf 'UYARI     %-16s %s\n' ".gitattributes" "UTF-16: git hiçbir kuralı okumaz; BOM'suz UTF-8 yeniden yaz, sonra git add --renormalize ." ;;
+    efbbbf) printf 'UYARI     %-16s %s\n' ".gitattributes" "UTF-8 BOM'lu: BOM'suz yeniden yaz (eski git ilk kuralı tanımayabilir)" ;;
+  esac
 fi
 # Windows'ta localhost önce IPv6 dener (bağlantı başına ~2 sn): yerel bağlantı dizesi 127.0.0.1 olmalı.
 case "$(uname -s 2>/dev/null)" in MINGW*|MSYS*|CYGWIN*)

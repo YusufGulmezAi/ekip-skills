@@ -47,8 +47,8 @@ Kaynak ve madde numaraları: [docs/yapilacaklar.md](docs/yapilacaklar.md).
 - **Arama sütununu veri tabanı üretir (PG 17+):** `GENERATED ALWAYS AS (search_normalize_v1(<alan>)) STORED`; önleyici tohumları, migration INSERT'lerini ve `ExecuteUpdate`'i atlıyordu. SQL fonksiyonu (`pg_c_utf8`, `IMMUTABLE`) ile `TextNormalizer` aynı adımları aynı sırayla uygular; ortak `search-vectors.json` ve tüm kod noktası taraması PostgreSQL 17.11'de birebir eşit (bilerek bozulan SQL'i 4 farkla yakaladı). Fonksiyon değişirse yeni ad + `SET EXPRESSION`; bayatlık sorgusu.
 - **`TextNormalizer` `Rune` düzeyinde:** temel düzlem dışı harfler (U+10400, U+1E900) PostgreSQL gibi küçülür.
 - **İnceleme:** `tr-TR-x-icu` + `ILIKE` harf kuralı için doğru; yalnız şapka ve `%x%` indeksi borç. Dosya boyu eşiği mevcut projede yalnız yeni dosyalara; eskiler borç listesinde (`kurulum` çıkarır).
-- **Kurulum:** `.gitattributes` BOM'suz ve ilk satırı açıklama; `.editorconfig` adlandırması projenin çoğunluk biçiminden (IDE1006 açık); para/kiracı/denetim değişmezleri `paths:` olmayan `degismezler.md`'de (planlama kod açmadan görür).
-- **Altyapı:** belge commit'i PR'dan önce (sonradan gelen commit CI'ı iptal eder); Windows'ta yerel PostgreSQL `127.0.0.1` (IPv6 denemesi ~2 sn/bağlantı). Doktor betiği BOM'u ve `Host=localhost`'u uyarır.
+- **Kurulum:** `.gitattributes` BOM'suz UTF-8 ve ilk satırı açıklama (ölçüldü: UTF-16 dosyada git hiçbir kuralı okumaz, UTF-8 BOM'u atlar); `.editorconfig` adlandırması projenin çoğunluk biçiminden (IDE1006 açık); para/kiracı/denetim değişmezleri `paths:` olmayan `degismezler.md`'de (planlama kod açmadan görür).
+- **Altyapı:** belge commit'i PR'dan önce (sonradan gelen commit CI'ı iptal eder); Windows'ta yerel PostgreSQL `127.0.0.1` (IPv6 denemesi ~2 sn/bağlantı). Doktor betiği UTF-16/BOM'lu `.gitattributes`'u ve `Host=localhost`'u uyarır.
 
 ## Türkçe arama: dil kuralı (v0.12)
 v0.10–0.11'deki normalleştirme `ı/İ/I → i` ve `ç→c` gibi katlamalar yapıyordu ("isparta" ISPARTA'yı buluyordu). Doğru kural (Yusuf, 6.11.2026): `ı↔I` ve `i↔İ` ayrı harf çiftleri, `ç ş ğ ö ü` ayrı harf, yalnız şapka sadeleşir (`â→a`, `î→i`, `û→u`).

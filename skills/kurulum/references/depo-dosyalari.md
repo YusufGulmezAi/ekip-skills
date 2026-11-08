@@ -1,9 +1,11 @@
 # Depo dosyaları: `.gitattributes` ve `.editorconfig` adlandırması
 
 ## `.gitattributes` — BOM'suz UTF-8, ilk satır açıklama
-BOM'lu dosyada git ilk satırı BOM ile birlikte okur ve o satırdaki kuralı tanımaz. fintech-core'da ilk kural `* text=auto eol=lf` bu yüzden etkisiz kaldı: 805 dosya CRLF, üretilmiş dosyalar sürekli "M", `dotnet format`'ta 87 bin hata. Bu yüzden:
-- Dosya BOM'suz yazılır (Write aracı; PowerShell 5.1'de `Set-Content`/`Out-File -Encoding utf8` BOM ekler, `[IO.File]::WriteAllText($yol, $metin, [Text.UTF8Encoding]::new($false))` eklemez).
-- İlk satır açıklamadır: BOM yine de girerse yalnız açıklama bozulur, kural değil. Doktor betiği BOM'u denetler.
+fintech-core'da ilk kural `* text=auto eol=lf` etkisiz kaldı: 805 dosya CRLF, üretilmiş dosyalar sürekli "M", `dotnet format`'ta 87 bin hata. Ölçüm (git 2.56, 08.11.2026): **UTF-16** dosyada (PowerShell 5.1'de `>`, `Out-File` varsayılanı) git hiçbir kuralı okumaz; UTF-8 BOM'u ise atlar, kural çalışır (eski git sürümleri ilk satırı tanımayabilir). Bu yüzden:
+- Dosya BOM'suz UTF-8 yazılır: Write aracı ya da `[IO.File]::WriteAllText($yol, $metin, [Text.UTF8Encoding]::new($false))`. PowerShell 5.1'de `>`/`Out-File` UTF-16, `Set-Content -Encoding utf8` UTF-8 BOM'lu yazar.
+- **UTF-16 ya da BOM'lu dosya düzenlenmez, silinip yeniden yazılır:** Edit/Write aracı mevcut dosyanın kodlamasını korur (ölçüldü: düzenlenen UTF-16 dosya BOM'u kaybedip yine UTF-16 kaldı). Önce `rm .gitattributes`, sonra Write ile yeni dosya.
+- İlk satır açıklamadır: BOM girerse yalnız açıklama bozulur, kural değil.
+- **Kanıt (atlanmaz):** `head -c4 .gitattributes | od -An -tx1` → `23 20 …` (`# `; `00` ya da `ff fe`/`ef bb bf` yok) ve `git check-attr text eol -- <bir .cs dosyası>` → `text: auto`, `eol: lf`. Doktor betiği UTF-16'yı ve BOM'u denetler.
 
 ```gitattributes
 # Satır sonları: depoda LF. Bu dosya BOM'suz UTF-8 kaydedilir (BOM ilk satırdaki kuralı etkisiz bırakır).
