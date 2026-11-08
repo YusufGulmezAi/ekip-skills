@@ -34,6 +34,7 @@ cd X:\src\ekip-skills
 claude plugin disable ekip-skills@ekip-skills --scope local   # bu depoda kurulu kopya kapalı
 claude --plugin-dir X:\src\ekip-skills                        # düzenlenen kopyayla deneme (VS Code terminalinde)
 ```
+- Açık iş listesi ve projelerden gelen `[ekip-skills]` dersleri: [yapilacaklar.md](yapilacaklar.md).
 - Eval'ler bash betikleriyle kurulur: WSL (Ubuntu) içinde koşturulur.
 - Sürüm: `plugin.json` sürümü artar → `main` → `gh release create vX.Y.Z` → `claude plugin marketplace update ekip-skills` + `claude plugin update ekip-skills@ekip-skills` → VS Code'u yeniden başlat ya da `/reload-plugins`.
 
