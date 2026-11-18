@@ -32,6 +32,8 @@
 - Git yetkisi: <temkinli (varsayılan): zorla push ve PR onaylı | geniş: push, PR ve `--force-with-lease` onaysız>; veri silen işlem her durumda onaylı
 - Durum dosyası: <docs/agent/durum.md | docs/DURUM.md> · Geliştirici kabuğu: <PowerShell | bash> (yerel deneme bloğu bu kabukta verilir)
 
+- ekip-skills: <yüklü sürüm, ör. 0.14.0> (son `kurulum`/`kurulum güncelle`; oturum başı uyarısı bunu okur)
+
 ### Onay gerektirenler
 Paket ekleme, migration üretme/uygulama, sözleşme değişikliği, yayın, veri silme.
 ```

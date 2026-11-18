@@ -42,6 +42,11 @@ Mimar ana oturumdur. Ajanlar başka ajan başlatmaz, kullanıcıya soru soramaz;
 
 **Önemli:** Oturum başı hook'u ile gelen çekirdek kurallar alt ajanlara ulaşmaz (ölçüldü). Bu yüzden yazan ajanların her birinde kısa bir "Çalışma kuralları" bölümü var. Çekirdek kural değişirse `rules/cekirdek.md` ile birlikte `agents/*-gelistirici.md`, `test-yazari.md`, `belge-yazari.md` de güncellenir.
 
+## Projeler her zaman güncel (v0.14)
+- **Eklenti:** `/plugin` → Marketplaces → `ekip-skills` → Enable auto-update (ya da kullanıcı ayarında `extraKnownMarketplaces.ekip-skills.autoUpdate: true`); üçüncü taraf pazar yerinde varsayılan kapalı. Açıkken yeni sürüm oturum içinde arka planda iner, sonraki açılışta ya da `/reload-plugins` ile yüklenir; skill'ler, yöntem belgeleri ve hook'lar bütün projelerde aynı anda güncellenir.
+- **Proje dosyaları:** `kurulum` profile `ekip-skills: <sürüm>` damgası yazar. Oturum başı hook'u damga yüklü sürümden eskiyse aradaki sürümlerin proje etkisini (`docs/proje-etkisi.md`) gösterir ve `kurulum güncelle` önerir; güncelleme yalnız o maddeleri, onayla uygular. Profilsiz projede sessiz.
+- **İnce kural:** projeye yalnız projeye özgü değerler kopyalanır, genel kural eklentide kalır; kopya ne kadar azsa o kadar az eskir.
+
 ## API belgeleri: dış ve iç ayrı (v0.14)
 HTTP API sunan her projede uç noktalar iki ayrı belgede: **dış** (bankalar, müşteriler, üçüncü taraflar; Word/PDF yalnız bundan, istenince) ve **iç** (ekip). Her uçta kalıcı `operationId`, kitle metadata'sı (`x-audience`), Türkçe özet ve testten yakalanan, açıklamalı başarı + hata örneği; güvenlik zorunlu (izin listeli maske, canlıda reddedilen test anahtarı, dış paket içerik taraması, varlık sızdırmayan hata cevabı); sabit bölüm şablonu ve üç dizin (uç, hata kodu, alan) testle korunur; kapsam testi eksikte kırmızı; tanım koddan üretilen OpenAPI ya da elle yazılmış dış sözleşme; örnek verisi sentetik; çıktı depoya girmez. Dış belgeyle birlikte test platformu dosyaları üretilir: **Postman Collection v2.1** + ortam dosyası (imza/kimlik istek öncesi betikte, her istekte test; CI'da Newman ile koşturulur) birincil, örnekli **OpenAPI 3** ikincil. Yöntem `belgele/references/api-belgeleri.md`, proje kuralı şablonu `kurulum/references/rules-api.md`. API'si olmayan projede kurulmaz. İlk uygulama fintech-core (karar: [docs/yapilacaklar.md](docs/yapilacaklar.md) madde 15).
 

@@ -26,6 +26,23 @@ durum_yolu() {
   fi
 }
 
+# Profildeki `ekip-skills: X.Y.Z` damgası (projenin kurulduğu/güncellendiği sürüm); yoksa boş.
+proje_ekip_surumu() {
+  local p
+  p=$(profil_dosyasi "$1") || return 0
+  grep -m1 -oE 'ekip-skills:[[:space:]`*]*[0-9]+\.[0-9]+\.[0-9]+' "$p" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+$'
+}
+
+# Yüklü eklenti sürümü: eklenti kökündeki .claude-plugin/plugin.json "version".
+yuklu_surum() {
+  grep -m1 -oE '"version"[[:space:]]*:[[:space:]]*"[^"]+"' "$1/.claude-plugin/plugin.json" 2>/dev/null | sed 's/.*"\([^"]*\)"$/\1/'
+}
+
+# $1 > $2 mi (sürüm sırası, sort -V).
+surum_buyuk() {
+  [ "$1" != "$2" ] && [ "$(printf '%s\n%s\n' "$1" "$2" | sort -V | tail -n1)" = "$1" ]
+}
+
 # Hook girdisindeki (stdin JSON) session_id; güvenli karakterlere indirgenir.
 oturum_kimligi() {
   printf '%s' "$1" | grep -o '"session_id"[[:space:]]*:[[:space:]]*"[^"]*"' | head -n1 \

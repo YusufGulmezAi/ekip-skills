@@ -48,9 +48,43 @@ durum_ozeti() {
     }' "$1"
 }
 
+# Proje, profildeki `ekip-skills: X.Y.Z` damgasıyla yüklü sürümün gerisindeyse aradaki sürümlerin proje etkisi
+# (docs/proje-etkisi.md) ve `kurulum güncelle` önerisi. Profilsiz projede (eklenti kurulmamış) sessiz.
+guncelleme_uyarisi() {
+  local yuklu damga etki v
+  profil_dosyasi "$PROJE" >/dev/null || return 0
+  yuklu=$(yuklu_surum "$KOK"); [ -n "$yuklu" ] || return 0
+  damga=$(proje_ekip_surumu "$PROJE")
+  if [ -n "$damga" ] && ! surum_buyuk "$yuklu" "$damga"; then return 0; fi
+  etki="$KOK/docs/proje-etkisi.md"
+  printf '\n\n# ekip-skills güncellemesi\n'
+  if [ -n "$damga" ]; then
+    printf 'Bu proje ekip-skills %s ile kurulmuş; yüklü sürüm %s. Aradaki sürümlerin proje etkisi:\n' "$damga" "$yuklu"
+  else
+    printf 'Profilde ekip-skills sürüm damgası yok (yüklü %s). Sürümlerin proje etkisi:\n' "$yuklu"
+  fi
+  if [ -r "$etki" ]; then
+    for v in $(grep -oE '^## [0-9]+\.[0-9]+\.[0-9]+' "$etki" | cut -c4-); do
+      surum_buyuk "$v" "${damga:-0.0.0}" || continue
+      surum_buyuk "$v" "$yuklu" && continue
+      awk -v v="$v" '$0 == "## " v { a = 1; print "- " v ":"; next } /^## / { a = 0 } a && /^- / { print "  " $0 }' "$etki"
+    done
+  fi
+  printf 'Kullanıcıya bunu bir cümleyle bildir ve `ekip-skills:kurulum güncelle` öner; proje dosyaları onaysız değiştirilmez, ADR ile çelişen madde uygulanmaz.\n'
+}
+
+# Satır sınırında en çok $1 karakter; kesilirse kaynağı söyler.
+kisalt() {
+  LC_ALL=C awk -v butce="$1" -v devam="$(printf '[\200-\277]')" '
+    { t = $0; gsub(devam, "", t); n = length(t) + 1; if (top + n > butce) { kesik = 1; exit } top += n; print }
+    END { if (kesik) print "…(devamı: eklentideki docs/proje-etkisi.md)" }'
+}
+
 on=""; [ -r "$RULES" ] && on=$(cat "$RULES")
+uyari=$(guncelleme_uyarisi | kisalt 1500)
 if [ ! -r "$DURUM" ]; then
   [ -n "$on" ] && printf '%s\n' "$on"
+  [ -n "$uyari" ] && printf '%s\n' "$uyari"
   exit 0
 fi
 baslik=$(printf '\n\n# Kaldığın yer (%s)' "$DURUM_REL")
@@ -60,8 +94,9 @@ if git -C "$PROJE" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   kirli=$(git -C "$PROJE" status --porcelain 2>/dev/null | wc -l | tr -d ' ')
   son=$(printf '\n\nGit: dal `%s`, commit edilmemiş %s dosya. İşe başlamadan `ekip-skills:devam` ile durumu doğrula.' "${dal:-?}" "$kirli")
 fi
-sabit=$(printf '%s%s\n%s\n' "$on" "$baslik" "$son" | karakter)
+sabit=$(printf '%s\n%s%s\n%s\n' "$on" "$uyari" "$baslik" "$son" | karakter)
 butce=$((SINIR - sabit - 20))
+[ -n "$uyari" ] && on=$(printf '%s\n%s' "$on" "$uyari")
 printf '%s%s\n' "$on" "$baslik"
 [ "$butce" -gt 0 ] && durum_ozeti "$DURUM" "$butce" "$DURUM_REL"
 [ -n "$son" ] && printf '%s\n' "$son"

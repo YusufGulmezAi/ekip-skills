@@ -24,6 +24,10 @@ Kaynak: Akses ve fintech-core'da v0.12.0 kullanımı, 06–08.11.2026. Projelerd
 - **13.** Belge commit'i PR açılmadan önce atılır; PR'a sonradan eklenen commit CI'ı yeniden başlatır, koşan iptal olur (Akses).
 - **14.** Windows'ta yerel PostgreSQL bağlantısı `localhost` yerine `127.0.0.1` (IPv6 denemesi ~2 sn/bağlantı; Akses akış testleri 1 sa → 8 dk). `rules-altyapi.md` / doktor betiği.
 
+## v0.14 — projeler her zaman güncel
+
+- **16.** Diğer projeler güncellemeleri tek tek değil, kendiliğinden almalı (Yusuf, 18.11.2026). Eklenti: pazar yeri otomatik güncellemesi (kullanıcı makinesinde bir kez açılır). Proje dosyaları: profilde `ekip-skills: <sürüm>` damgası + oturum başı uyarısı (`docs/proje-etkisi.md`'den aradaki sürümlerin maddeleri) + `kurulum güncelle` yalnız bu maddeleri onayla uygular; ince kural ilkesi. Proje dosyaları kendiliğinden yeniden yazılmaz (ADR ve sahiplik). — yapıldı (v0.14).
+
 ## v0.14 — API başvuru kitabı
 
 - **15.** Her uç nokta örnekleriyle birlikte her zaman belgeli olmalı; istendiğinde `.docx` ve `.pdf` olarak dışa aktarılabilmeli (Yusuf, 17.11.2026). Okuyucu: ekip (Flutter) ve dış taraf (entegratör, müşteri BT'si, denetçi). İlke: kitap elle yazılmaz; tanım koddan üretilen OpenAPI'den, örnek istek/yanıt (hata yanıtları dahil) entegrasyon testlerinin gerçek çağrılarından gelir; CI örneksiz ya da açıklamasız uç noktayı kırmızı yapar; Word/PDF istenince tek Markdown kaynağından `pandoc` ile üretilir, depoya girmez, sürüm + commit + tarih taşır. Örneklerde yalnız sentetik veri; iç uç noktalar dış kitaba girmez; PDF'te Türkçe yazı tipi. İlk uygulama: **fintech-core** (OpenAPI'li gerçek JSON API, `ApiProblem` hata yanıtı, ExternalChannel dış yüzeyi). Akses bugün API sunmuyor (Blazor; ADR-001 OpenAPI'yi dışlıyor, 15 uç yalnız ekran yardımcısı); Akses'e API katmanı ADR'si açıldığında (`acik-sorular.md`: `/api/v1`, OpenAPI, problem details) bu yöntemle baştan girilir. Karar: Yusuf, 17.11.2026.

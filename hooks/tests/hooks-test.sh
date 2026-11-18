@@ -92,5 +92,28 @@ printf '**Şu an:** profildeki\n' >> "$P/docs/DURUM.md"
 c=$(basla); case "$c" in *"Kaldığın yer (docs/DURUM.md)"*"profildeki"*) basari "başlangıç: profildeki durum yolunu kullanır";;
   *) hata "başlangıç: profildeki durum yolunu kullanır" "${c: -300}";; esac
 
+# --- Sürüm uyarısı (proje ekip-skills sürümünün gerisinde mi) ---
+yuklu=$(grep -m1 -oE '"version"[[:space:]]*:[[:space:]]*"[^"]+"' "$KOK/.claude-plugin/plugin.json" | sed 's/.*"\([^"]*\)"$/\1/')
+yeni_proje; profil_yaz '- ekip-skills: 0.12.0'
+c=$(basla); case "$c" in *"# ekip-skills güncellemesi"*"0.12.0"*"$yuklu"*"api.md"*"kurulum güncelle"*) basari "sürüm: geride kalan proje uyarı ve proje etkisi alır";;
+  *) hata "sürüm: geride kalan proje uyarı ve proje etkisi alır" "${c: -600}";; esac
+case "$c" in *"- 0.12.1:"*) basari "sürüm: damgadan sonraki ilk sürüm listede";; *) hata "sürüm: damgadan sonraki ilk sürüm listede" "${c: -600}";; esac
+
+yeni_proje; profil_yaz "- ekip-skills: $yuklu"
+c=$(basla); case "$c" in *"ekip-skills güncellemesi"*) hata "sürüm: güncel projede uyarı yok" "${c: -300}";; *) basari "sürüm: güncel projede uyarı yok";; esac
+
+yeni_proje; profil_yaz
+c=$(basla); case "$c" in *"# ekip-skills güncellemesi"*"damgası yok"*) basari "sürüm: damgasız profilde uyarı";;
+  *) hata "sürüm: damgasız profilde uyarı" "${c: -400}";; esac
+
+yeni_proje
+c=$(basla); case "$c" in *"ekip-skills güncellemesi"*) hata "sürüm: profilsiz projede sessiz" "${c: -300}";; *) basari "sürüm: profilsiz projede sessiz";; esac
+
+yeni_proje; profil_yaz '- ekip-skills: 0.1.0'; mkdir -p "$P/docs/agent"
+{ echo '# Durum'; for i in $(seq 1 150); do echo "| IP-$i uzun satır çğüşıö | geçti |"; done; echo '## Sıradaki'; echo '- IP-151'; } > "$P/docs/agent/durum.md"
+c=$(basla); n=$(printf '%s' "$c" | karakter)
+case "$c" in *"ekip-skills güncellemesi"*"IP-151"*) basari "sürüm: uyarı + uzun durum birlikte";; *) hata "sürüm: uyarı + uzun durum birlikte" "${c: -300}";; esac
+[ "$n" -le 10000 ] && basari "sürüm: uyarıyla toplam ≤ 10.000 karakter ($n)" || hata "sürüm: uyarıyla toplam ≤ 10.000 karakter" "$n"
+
 printf '\n%s geçti, %s kaldı\n' "$gecen" "$kalan"
 [ "$kalan" -eq 0 ]

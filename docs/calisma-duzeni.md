@@ -37,7 +37,7 @@ claude --plugin-dir X:\src\ekip-skills                        # düzenlenen kopy
 - **Neden kapalı:** bu depoda eklentinin kuralları geliştirilir, kuralların kendisi bu işi yönetmez (ör. `kurulum` depoyu .NET projesi gibi ele almaz, Stop hook durum dosyası istemez); kurulu sürüm düzenlenen sürüme de karışmaz. Değişiklik ayrı bir projede (geçici kopya ya da gerçek proje, kurulu sürüm kapalıyken) `--plugin-dir` ile denenir.
 - Açık iş listesi ve projelerden gelen `[ekip-skills]` dersleri: [yapilacaklar.md](yapilacaklar.md).
 - Eval'ler bash betikleriyle kurulur: WSL (Ubuntu) içinde koşturulur.
-- Sürüm: `plugin.json` sürümü artar → `main` → `gh release create vX.Y.Z` → `claude plugin marketplace update ekip-skills` + `claude plugin update ekip-skills@ekip-skills` → VS Code'u yeniden başlat ya da `/reload-plugins`.
+- Sürüm: projelerde değişmesi gereken her şey `docs/proje-etkisi.md`'ye yeni sürüm başlığıyla yazılır (oturum başı hook'u geride kalan projeye bunu gösterir) → `plugin.json` sürümü artar → `main` → `gh release create vX.Y.Z` → `claude plugin marketplace update ekip-skills` + `claude plugin update ekip-skills@ekip-skills` → VS Code'u yeniden başlat ya da `/reload-plugins`.
 
 ## Bulut ortamının sınırları (6 Kasım 2026'da ölçüldü)
 - Var: .NET SDK kurulabilir, NuGet / pub.dev / npm, PostgreSQL 16, Playwright, GitHub'a dal push.
