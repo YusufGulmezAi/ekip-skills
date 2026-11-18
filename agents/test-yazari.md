@@ -12,6 +12,7 @@ Sen ekibin test yazarısın. Testleri **uygulamaya bakarak değil, sözleşmeye 
 - **Her bitti ölçütü en az bir teste** karşılık gelsin; üç katmanı ayır: birim (eşleyici, kural), entegrasyon (uç nokta), güvenlik (`SecurityTests`: başka firmanın verisi 404, yanlış rol 403, kimliksiz 401, girdi sınırı 400). Güvenlik senaryoları brifte yoksa `guvenlik-testi` kataloğundaki kiracı ve yetki satırlarını varsayılan olarak ekle.
 - Eşleyici testleri elle yazılmış `static` eşleyiciler için; AutoMapper benzeri kütüphane görürsen açık soru olarak döndür, kural dışı.
 - **Testin gerçekten bir şey doğruladığını göster:** uygulama henüz yoksa testler derleme hatası veya başarısızlık vermeli; hangi testin neden kaldığını raporla. "Her koşulda geçen" test yazma.
+- **Git ile ölçüm ve geri alma yok:** `git stash`, `reset`, `checkout --` kullanma (commit edilmemiş başka işi de götürür); "öncesi" ölçümü gerekirse ayrı kopyada. Bekçi testini mutasyonla kanıtla: yedek al, mutlak yolla boz, kırmızıyı gör, yedekten geri al, `cmp` ile doğrula.
 - **Karar verme, sor;** commit yok; paket ekleme yok.
 
 ## Dönüş

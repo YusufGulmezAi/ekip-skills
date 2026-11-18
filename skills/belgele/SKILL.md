@@ -41,8 +41,9 @@ Başlıklar: **karar kaydı** Bağlam / Karar / Sonuçlar / Değerlendirilen se�
    `incele`, değişen modülün kapsamına giren dokümanları bu satırdan bulur.
 3. **Kullanıcı dili.** Son kullanıcı dokümanında teknik terim yok; ekrandaki etiket neyse o yazılır. Adım başına tek eylem. Ekran görüntüsü yoksa `[EKRAN: Mahal tespiti, Sorunlu seçili]` yer tutucusu; uydurma görüntü yok.
 4. **Küçük dosya.** Her doküman tek konu, ≤ 150 satır; aşınca böl (ör. `nasil-onay-kutusu.md` → `nasil-kusur-onaylama.md` + `nasil-geri-gonderme.md`) ve haritada ikisini de listele.
-5. **Haritayı güncelle.** Yeni dokümanı `docs/README.md` haritasına ekle; harita dışında kalan doküman bulunamaz.
-6. **Rapor.** Oluşturulan/güncellenen dosyalar ve hangi kod değişikliğine bağlı oldukları.
+5. **Diyagram koddan eskir.** Elle çizilen diyagram (durum makinesi, akış) ya koddan üretilir ya da kod eşitliği bekçisine bağlanır (kodun geçişleri okunup diyagramla karşılaştırılır). Bekçi her makineyi kapsar; diyagramı olmayan makinede sessiz yeşil vermez.
+6. **Haritayı güncelle.** Yeni dokümanı `docs/README.md` haritasına ekle; harita dışında kalan doküman bulunamaz.
+7. **Rapor.** Oluşturulan/güncellenen dosyalar ve hangi kod değişikliğine bağlı oldukları.
 
 ## Bayatlama kontrolü
 `belgele` çağrıldığında, kapsamı değişen koda dokunan ve `son_dogrulama` tarihi o değişiklikten eski olan dokümanları listele; kullanıcıya hangilerinin güncelleneceğini sor.

@@ -42,6 +42,9 @@ Mimar ana oturumdur. Ajanlar başka ajan başlatmaz, kullanıcıya soru soramaz;
 
 **Önemli:** Oturum başı hook'u ile gelen çekirdek kurallar alt ajanlara ulaşmaz (ölçüldü). Bu yüzden yazan ajanların her birinde kısa bir "Çalışma kuralları" bölümü var. Çekirdek kural değişirse `rules/cekirdek.md` ile birlikte `agents/*-gelistirici.md`, `test-yazari.md`, `belge-yazari.md` de güncellenir.
 
+## fintech-core dersleri (v0.15)
+fintech-core'un `[ekip-skills]` etiketli dersleri (`docs/agent/ogrenimler.md`, 08–18.11.2026): bekçi testi mutasyonla kanıtlanır, mutasyon mutlak yolla uygulanır ve geri alma `cmp` ile doğrulanır; süzgeçli kabule genel kural bekçileri eklenir; ölçüm için `git stash` yok (ajan kurallarında da); kimlik/oran sınırlama/kiracı testleri gerçek boru hattıyla; veri dokunan göç dolu veritabanında ve satır sayısıyla, RLS'de dar görünürlükle; elle diyagram ya üretilir ya bekçiye bağlanır.
+
 ## Projeler her zaman güncel (v0.14)
 - **Eklenti:** `/plugin` → Marketplaces → `ekip-skills` → Enable auto-update (ya da kullanıcı ayarında `extraKnownMarketplaces.ekip-skills.autoUpdate: true`); üçüncü taraf pazar yerinde varsayılan kapalı. Açıkken yeni sürüm oturum içinde arka planda iner, sonraki açılışta ya da `/reload-plugins` ile yüklenir; skill'ler, yöntem belgeleri ve hook'lar bütün projelerde aynı anda güncellenir.
 - **Proje dosyaları:** `kurulum` profile `ekip-skills: <sürüm>` damgası yazar. Oturum başı hook'u damga yüklü sürümden eskiyse aradaki sürümlerin proje etkisini (`docs/proje-etkisi.md`) gösterir ve `kurulum güncelle` önerir; güncelleme yalnız o maddeleri, onayla uygular. Profilsiz projede sessiz.

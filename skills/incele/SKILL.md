@@ -44,7 +44,7 @@ Her bulgu önce **doğrulanır** (kod okunarak ya da komutla), sonra karar veril
 **Sadelik ve uyum** — istenenden fazla soyutlama; kullanılmayan kod; projenin isimlendirme/katman düzenine uymayan yeni kod; diff'te ilgisiz dosya.
 **Test** — yeni davranış ya da düzeltilen hata için test var mı; test gerçekten bir şey doğruluyor mu (assert'siz, her koşulda geçen, uygulamayı tekrarlayan "totolojik" test).
 **Güvenlik testi** — yeni/değişen uç nokta veya ekran için `SecurityTests` / `test/security/` altında senaryo var mı (kiracı sızıntısı, yetkisiz rol, girdi sınırı); yoksa `guvenlik-testi` ile eklenmesi **Önemli** bulgu.
-**Belge kayması** — değişen modülü `kapsam:` satırında anan dokümanlar (`docs/**/*.md`) hâlâ doğru mu; yeni uç nokta/ekran için rehber veya karar kaydı gerekiyor mu; public API değiştiyse XML doküman yorumu/dartdoc güncel mi. Bayat doküman **Önemli** sayılır: kullanıcı ona güvenerek yanlış iş yapar.
+**Belge kayması** — bekçisiz elle çizilmiş diyagram (durum makinesi, akış) da bayat sayılır; değişen modülü `kapsam:` satırında anan dokümanlar (`docs/**/*.md`) hâlâ doğru mu; yeni uç nokta/ekran için rehber veya karar kaydı gerekiyor mu; public API değiştiyse XML doküman yorumu/dartdoc güncel mi. Bayat doküman **Önemli** sayılır: kullanıcı ona güvenerek yanlış iş yapar.
 
 ## Boyut
 Değişen her dosya için çekirdek eşiklere bak (C# ≤ 200 satır, Dart widget ≤ 150, metot ≤ 30, `build()` ≤ 60). Eşik yeni dosyalara uygulanır: yeni dosyada ya da bu diff'le eşiği ilk kez aşan dosyada **Önemli** bulgu ("bölünecek" ve önerilen bölme). Diff'ten önce de eşiği aşan dosya bulgu değildir (borç listesinde, doküman ≤ 150 dahil); diff onu belirgin büyüttüyse **Öneri**, borç listesine atıfla.

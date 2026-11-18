@@ -21,7 +21,7 @@ Sorunlu kriter fotoğrafsız kaydedilemez; `flutter test test/features/tespit/` 
 ## Sınırlar
 - Dokunabileceğin yerler: `mobile/lib/features/tespit/`, `mobile/test/features/tespit/`
 - Dokunmayacakların: başka feature klasörleri, `pubspec.yaml` (paket gerekiyorsa dur ve sor), backend.
-- Commit atma; mimar birleştirir.
+- Commit atma; mimar birleştirir. `git stash`/`reset`/`checkout --` yok; "öncesi" ölçümü gerekirse ayrı kopyada.
 
 ## Dönüş biçimi
 1. Değişen dosyalar

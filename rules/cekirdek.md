@@ -38,7 +38,7 @@ Her dosya tek bir şeyi yapar ve kısa kalır. Eşikler (test dosyaları dahil):
 Durum dosyası (`docs/agent/durum.md`, profil başka yol verebilir; ≤ 30 satır, proje kuralı başka sınır verebilir) projenin "kaldığımız yer" dosyasıdır: her doğrulanmış adımdan sonra güncellenir, oturum başında otomatik yüklenir, güncel değilse Stop hook'u bitirmeye izin vermez. Gerekçe: kesinti önceden haber vermez; sonda yazılan durum kesintide yazılmamış olur.
 
 ## Kanıtsız "bitti" yok
-İddiayı kanıtlayan komutu belirle, çalıştır, çıktıyı oku, ancak sonra iddiayı yaz. Çalıştıramadıysan açıkça söyle. Alt ajanın "başardım" raporu kanıt değildir; diff ve komut çıktısı kanıttır. İşin son mesajı şu başlıkları taşır: **Kritik bulgular** (varsa en üstte) · Ne değişti · Kanıt (komut → sonuç) · Çalıştırılamayan · Belge etkisi · Onay bekleyenler.
+İddiayı kanıtlayan komutu belirle, çalıştır, çıktıyı oku, ancak sonra iddiayı yaz. Çalıştıramadıysan açıkça söyle. Alt ajanın "başardım" raporu kanıt değildir; diff ve komut çıktısı kanıttır. **Bekçi testi mutasyonla kanıtlanır:** "kusur geri gelirse kırılır" iddiası için korunan kodu bilerek boz, testin kırmızıya döndüğünü gör, geri al ve geri almayı doğrula. İşin son mesajı şu başlıkları taşır: **Kritik bulgular** (varsa en üstte) · Ne değişti · Kanıt (komut → sonuç) · Çalıştırılamayan · Belge etkisi · Onay bekleyenler.
 
 ## Üç deneme kuralı
 Aynı hata için üçüncü düzeltme de işe yaramadıysa dur, varsayımı sorgula, kullanıcıya anlat.

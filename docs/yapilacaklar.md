@@ -24,6 +24,17 @@ Kaynak: Akses ve fintech-core'da v0.12.0 kullanımı, 06–08.11.2026. Projelerd
 - **13.** Belge commit'i PR açılmadan önce atılır; PR'a sonradan eklenen commit CI'ı yeniden başlatır, koşan iptal olur (Akses).
 - **14.** Windows'ta yerel PostgreSQL bağlantısı `localhost` yerine `127.0.0.1` (IPv6 denemesi ~2 sn/bağlantı; Akses akış testleri 1 sa → 8 dk). `rules-altyapi.md` / doktor betiği.
 
+## v0.15 — fintech-core dersleri (`docs/agent/ogrenimler.md`, `[ekip-skills]`) — yapıldı (17–23)
+
+- **17.** Bekçi testi mutasyonla kanıtlanır (08.11) → `cekirdek.md`, `uygula`, ajan kuralları.
+- **18.** Mutasyonda mutlak yol, geri almayı `cmp` ile doğrula; PowerShell `[IO.File]` göreli yolu .NET çalışma dizinine göre çözer (13.11) → `uygula`.
+- **19.** Süzgeçli kabul genel kural bekçisini kaçırır; kabule yansıma tabanlı genel testler, push öncesi tam takım (18.11) → `orkestra`.
+- **20.** Ajan ölçüm için `git stash` kullandı (14.11) → `orkestra`, brif şablonu, ajan kuralları: stash/reset/checkout yok.
+- **21.** Ara katman durumunu testte elle yazma; kimlik/kova testleri uçtan uca (08.11) → `rules-dotnet.md`, `guvenlik-testi`.
+- **22.** Göç içi sorgu RLS altında kördür; veri dokunan göç dolu veritabanında, satır sayısıyla (13.11) → `rules-veri.md`.
+- **23.** Elle diyagram koddan eskir; üretilir ya da bekçiye bağlanır (13.11) → `belgele`, `incele`.
+- ("Önce derle" dersi v0.12.1 madde 12'de zaten var.)
+
 ## v0.14 — projeler her zaman güncel
 
 - **16.** Diğer projeler güncellemeleri tek tek değil, kendiliğinden almalı (Yusuf, 18.11.2026). Eklenti: pazar yeri otomatik güncellemesi (kullanıcı makinesinde bir kez açılır). Proje dosyaları: profilde `ekip-skills: <sürüm>` damgası + oturum başı uyarısı (`docs/proje-etkisi.md`'den aradaki sürümlerin maddeleri) + `kurulum güncelle` yalnız bu maddeleri onayla uygular; ince kural ilkesi. Proje dosyaları kendiliğinden yeniden yazılmaz (ADR ve sahiplik). — yapıldı (v0.14).

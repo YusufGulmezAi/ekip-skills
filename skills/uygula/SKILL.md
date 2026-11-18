@@ -35,6 +35,8 @@ Projenin kendi komutu (Makefile, betik, CI, CLAUDE.md) varsa onu kullan. Yoksa:
 
 Üretilmiş dosyaları (`*.g.dart`, `*.freezed.dart`, EF migration snapshot) elle düzenleme; üreticiyi çalıştır.
 
+**Mutasyon kanıtı** (bekçi, kapsam ya da güvenlik testi yazıldığında): önce dosyanın yedeğini al; mutasyonu **mutlak yolla** uygula ve uygulandığını gör (`cmp <yedek> <dosya>` fark gösteriyor); testin kırmızıya döndüğünü gör; yedekten geri al ve `cmp <yedek> <dosya>` ile doğrula. Mutasyon hiç commit edilmez; `git stash`/`reset`/`checkout --` ile geri alma yok (aynı dosyadaki başka işi de götürür). PowerShell'de `[IO.File]` göreli yolu `Set-Location`'a değil .NET çalışma dizinine göre çözer: mutlak yol ya da `Get-Content`/`Set-Content`. Uygulanmayan mutasyon (eşleşmeyen desen) testi zayıf gösterir ve zaman kaybettirir; bu yüzden uygulandığı ayrıca görülür.
+
 ## Bitiş raporu
 - **Ne değişti:** dosyalar ve bir cümle.
 - **Kanıt:** çalıştırılan komutlar ve sonuçları (geçti/kaldı, sayılar).

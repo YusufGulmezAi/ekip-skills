@@ -59,6 +59,6 @@ paths: ["**/*.cs", "**/*.csproj", "**/*.sln", "**/*.slnx"]
 ## Test (üç katman)
 - **Birim** (`UnitTests`): <xUnit | MSTest>; eşleyiciler, iş kuralları, hesaplar; dış bağımlılık yok. Ad: `Method_State_Expected`. Testte `Task.Delay`/`Thread.Sleep` yok; zaman ve sıra `FakeTimeProvider` (ya da elle sahte `TimeProvider`) ile.
 - **Entegrasyon** (`IntegrationTests`): `WebApplicationFactory` + <Testcontainers PostgreSQL | SQLite>; her uç nokta için başarılı yol + yetkisiz + yanlış durum.
-- **Güvenlik** (`SecurityTests`): her kiracılı uç nokta için "başka firmanın verisi 404", rolsüz erişim 403, kimliksiz 401; girdi doğrulama (çok uzun, boş, enjeksiyon kalıbı) 400. Plan: `guvenlik-testi` skill'i. CI'da `dotnet list package --vulnerable` ve ZAP baseline taraması.
+- **Güvenlik** (`SecurityTests`, gerçek boru hattıyla: kimlik, oran sınırlama ve kiracı çözümü HTTP üzerinden; `HttpContext.Items`/`User` elle doldurulmaz): her kiracılı uç nokta için "başka firmanın verisi 404", rolsüz erişim 403, kimliksiz 401; girdi doğrulama (çok uzun, boş, enjeksiyon kalıbı) 400. Plan: `guvenlik-testi` skill'i. CI'da `dotnet list package --vulnerable` ve ZAP baseline taraması.
 - **Seed**: `tools/Seed/` Bogus ile **deterministik** (sabit tohum) sentetik veri; entegrasyon testleri ve Demo aynı üreteci kullanır. Üretimden veri kopyalanmaz.
 ```

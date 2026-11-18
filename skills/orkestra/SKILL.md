@@ -58,6 +58,8 @@ Her dönüşte, ajanın raporundan bağımsız olarak:
 4. Kullanıcıya rapor: görev tablosu (durum, ajan, kanıt), açık sorular, retro için gözlemler (geri gönderilen teslimler, çakışmalar).
 
 ## Alt ajan dersleri (sahada öğrenildi)
+- **Süzgeçli kabul genel bekçiyi kaçırır.** Ajan süzgeçle teslim ettiyse ya da son doğrulamada takıldıysa, kabul süzgecine yansıma tabanlı genel kural testleri (mimari, yaşam döngüsü, izin listeleri) eklenir; push öncesi tam takım atlanmaz.
+- **Ölçüm için `git stash` yok.** Stash commit edilmemiş başka işi de kapsar; "öncesi" ölçümü ayrı kopyada (worktree ya da geçici klon) yapılır. Brifte yazılır.
 - **Tam test tek yerde.** Ajan yalnız değişen alanın testlerini filtreli koşturur (+ derleme, biçim); tam paketi mimar kabulde **bir kez** çalıştırır, mümkünse arka planda başlatıp diff'i o sırada okur. Uzun test komutu `timeout` ile.
 - **Worktree tabanı.** Worktree'deki ajanın ilk adımı: `pwd` ile yeri doğrula, `git merge --ff-only <dal SHA>`, `git log -1` ile tabanı doğrula (`reset --hard` izinle engellenebilir).
 - **Git işi için bitmiş ajan uyandırılmaz;** yeni ajan başlatılır. Aynı ekrandaki küçük revizyon ise aynı ajana gider (belgeleri yeniden okumasın).

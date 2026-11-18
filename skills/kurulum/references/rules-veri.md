@@ -12,6 +12,10 @@ paths: ["**/*.cs", "**/*.sql", "**/Migrations/**", "**/compose*.y*ml"]
 - .NET 10 LTS (`net10.0`; destek 14.11.2028). SDK `global.json` ile sabit: `"version": "10.0.<yama>", "rollForward": "latestFeature", "allowPrerelease": false` (global.json yoksa CLI önizleme SDK'yı da seçebilir). EF Core 10, Npgsql.EntityFrameworkCore.PostgreSQL 10.x, PostgreSQL <18>. STS sürüm (11, 13) kullanılmaz; yeni LTS'e geçiş karar kaydıyla.
 - **Önizleme yok:** preview/rc/beta/alpha/dev sürüm hiçbir yerde kullanılmaz — SDK, NuGet ve pub paketleri, Docker imaj etiketleri, Flutter kanalı (yalnız `stable`).
 
+## Göç (migration)
+- Veri dokunan göç (`UPDATE`, `INSERT … SELECT`, `VALIDATE CONSTRAINT`, geri dolum) taranan ve değişen satır sayısını yazar ve **dolu veritabanında** sınanır: tohum → göç → son durum. Boş veritabanında koşan göç testi "0 satır, başarılı" sonucunu ayırt edemez.
+- RLS (satır düzeyi güvenlik) kullanan projede göç kullanıcısı kiracı bağlamı olmadan 0 satır görüp başarılı dönebilir: veri göçü dar görünürlükle yazılır (göç içinde geçici politika ya da kiracı başına `set_config`) ve sayıyla doğrulanır.
+
 ## Türkçe metin: arama, eşitlik, sıralama
 - **Kural (dil kuralı):** `ı↔I` ve `i↔İ` ayrı harf çiftleridir; `ç ş ğ ö ü` ayrı harftir (c s g o u ile eşleşmez); şapka sadeleşir (`â→a`, `î→i`, `û→u`). "isparta" → isparta, İsparta, İSPARTA (ISPARTA ve Isparta değil); "ısparta" → ısparta, Isparta, ISPARTA; "izmir" → İzmir (IZMIR değil); "kazım" → Kâzım; "cagri" Çağrı'yı bulmaz.
 - Ölçüldü (PostgreSQL ICU): `tr-TR-x-icu` kolon + `ILIKE` büyük/küçük harfte kurala uyar ama şapkayı sadeleştirmez ("kazım" Kâzım'ı bulmaz) ve `%x%` için indeks kullanmaz; varsayılan (C/en) collation'da `ILIKE` kurala uymaz ("izmir" İzmir'i bulmaz, "isparta" ISPARTA'yı bulur). Kodda kültürsüz `ToLower()`/`ToUpper()` aynı hatayı uygulamada üretir.
