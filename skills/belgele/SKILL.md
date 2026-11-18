@@ -23,7 +23,7 @@ Başlıklar: **karar kaydı** Bağlam / Karar / Sonuçlar / Değerlendirilen se�
 ## Ne zaman yazılır
 - **Karar verildiğinde** (`sorgula`, `tasarla`, `planla` sırasında): geri alması pahalı her karar için karar kaydı. Kararı veren konuşma unutulur, kayıt kalır.
 - **Kod yazılırken**: başvuru dokümanı koddan üretilir, elle yazılmaz. .NET'te XML doküman yorumları ve OpenAPI belgesi; Flutter'da dartdoc. Elle yazılan başvuru ilk değişiklikte bayatlar.
-- **Uç nokta eklendiğinde/değiştiğinde**: API belgeleri **dış** (bankalar, müşteriler, 3. taraflar) ve **iç** (ekip) olarak ayrı tutulur; her uçta kitle işareti, Türkçe özet, testten yakalanan başarı ve hata örneği. Word/PDF yalnız dış belgeden, istenince. Yöntem: `references/api-belgeleri.md`.
+- **Uç nokta eklendiğinde/değiştiğinde**: API belgeleri **dış** (bankalar, müşteriler, 3. taraflar) ve **iç** (ekip) olarak ayrı tutulur; her uçta kitle işareti, Türkçe özet, testten yakalanan başarı ve hata örneği. Word/PDF yalnız dış belgeden, istenince. Yöntem ve güvenlik: `references/api-belgeleri.md`; bölümler, dizinler, açıklamalı örnek: `references/api-belge-yapisi.md`.
 - **Yetki değiştiğinde**: `docs/yetki-matrisi.md` (rol × eylem tablosu, tek kaynak) aynı PR'da güncellenir; `guvenlik-testi` senaryoları bu matristen türetilir, matris değişmeden yetki kodu değişmez.
 - **Özellik bittiğinde** (`uygula` raporunda "Belge etkisi" doluysa): ilgili rol rehberleri ve gerekiyorsa öğretici.
 - **Yayında** (`yayin`): değişiklik günlüğü ve kullanıcıya dönük sürüm notu.

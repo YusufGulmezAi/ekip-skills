@@ -1,36 +1,37 @@
-# API belgeleri: dış ve iç ayrı, örnekli, istenince Word/PDF
+# API belgeleri: dış ve iç ayrı, örnekli, istenince Word/PDF ve Postman
 
-Karar: Yusuf, 17–18.11.2026 (`docs/yapilacaklar.md` madde 15). HTTP API sunan her projede geçerlidir (minimal API ya da controller). API'si olmayan projede (yalnız sunucuda üretilen sayfalar, ör. Blazor SSR) kurulmaz; dış API kararı verildiğinde (ADR) bu düzenle baştan kurulur.
+Karar: Yusuf, 17–18.11.2026 (`docs/yapilacaklar.md` madde 15); fintech-core ilk uygulamasının geri bildirimiyle düzeltildi (18.11.2026). HTTP API sunan her projede geçerlidir (minimal API ya da controller). API'si olmayan projede (yalnız sunucuda üretilen sayfalar, ör. Blazor SSR) kurulmaz; dış API kararı verildiğinde (ADR) bu düzenle baştan kurulur. Belgenin bölümleri, dizinler ve açıklamalı örnek: `api-belge-yapisi.md`.
+
+Öncelik sırası: (1) güvenlik açığı oluşmaz, (2) profesyonel yapı, gruplama, dizin, (3) açıklamalı örnek.
 
 ## İlkeler
-1. **İki kitle, iki belge.**
-   - **Dış belge:** bankalar, müşteriler, üçüncü taraflar. Dağıtılır; Word, PDF ve test platformu dosyaları (Postman koleksiyonu, OpenAPI) yalnız bundan üretilir.
-   - **İç belge:** ekip (web/mobil istemci, işletim, yönetim uçları). Depoda ya da proje kitabında kalır, dışarı gönderilmez.
-2. **Her uç noktanın kitlesi açık.** Uç tanımında `dış` ya da `iç` işareti; OpenAPI'ye `x-kitle` uzantısı olarak yansır. İşaretsiz uç CI'da kırmızı. Dış belgeye iç uç, iç belgeye dış uç girmez.
-3. **Tanım koddan.** OpenAPI derlemede koddan üretilir (.NET 10: `Microsoft.AspNetCore.OpenApi`); her işlemde Türkçe özet ve açıklama, istek/yanıt tipleri, hata yanıtları (`ProblemDetails` + `code` + `params`), kimlik doğrulama şeması. Elle yazılmış bir dış sözleşme varsa (ör. imzalı kanal) tanım odur; örnekleri yine testten gelir.
-4. **Örnek testten, elle yazılmaz.** Uç noktayı HTTP ile çağıran entegrasyon testi istek ve yanıtı yakalar. Örnek, test geçtiği sürece doğrudur; bayatlarsa test kırmızı.
-5. **Örnek verisi sentetik.** Gerçek kişi, TCKN, IBAN, kart, adres yok; deterministik test verisi. Anahtar ve imzalar test anahtarıyla, belgede "TEST" olarak işaretli.
-6. **Çıktı depoya girmez.** Üretilen Markdown, Word ve PDF CI çıktısı (artifact) ya da yayın eki olur; her kopya kapakta ürün, kitle, sürüm, commit ve tarih taşır.
+1. **İki kitle, iki belge.** **Dış** (bankalar, müşteriler, üçüncü taraflar): dağıtılır; Word, PDF, Postman koleksiyonu ve dış OpenAPI yalnız bundan. **İç** (ekip istemcileri, işletim, yönetim): depoda ya da proje kitabında kalır.
+2. **Kitle uç metadata'sıdır, etiket değil.** Her uçta `ApiAudience.External | Internal` metadata'sı; OpenAPI'ye `x-audience` olarak yansır. OpenAPI dışında bilerek tutulan uçlar (sağlık, imzalı dış kanal) da işaretlidir; kapsam testi uç listesini OpenAPI'den değil `EndpointDataSource`'tan gezer.
+3. **Tanım koddan.** OpenAPI koddan üretilir (.NET 10 `Microsoft.AspNetCore.OpenApi`). Dış uçlar için **adlandırılmış ikinci belge** (`AddOpenApi("external")` + kitleye göre `ShouldInclude`); bayrakla açılan üretim kipi kullanılmaz, iç belge bayt bayt aynı kalır. Elle yazılmış dış sözleşme varsa tanım odur; alanlarının kaynağı keşifle bulunur (ana belge, yan belgeler, JSON blokları) ve testte yanıtla karşılaştırılır.
+4. **Örnek testten, elle yazılmaz;** açıklaması yan dosyada (`api-belge-yapisi.md`). Bayatlayan örnek test kırmızısıdır.
+5. **Kod adları İngilizce:** `x-audience`, `ApiExamples/<external|internal>/<operationId>/...`, `ApiAudience`; belge metni Türkçe.
 
-## Kurulum (ilk uygulama, projede bir kez)
-1. **Envanter:** haritalanan tüm uçları listele (`Map*`, `[ApiController]`), her birine kitle öner; kullanıcı onaylar. İşletim uçları (`/health`, `/version`) iç.
-2. **Kitle işareti:** küçük bir metadata tipi (`ApiAudience.External | Internal`) ve uç grubunda `.WithMetadata(...)` ya da `.WithTags("dış: ...")`; operation transformer bunu `x-kitle` yapar. Projede yerleşik etiket düzeni varsa ona uy.
-3. **Tanım zenginleştirme:** her uçta `WithSummary`/`WithDescription` (Türkçe), `Produces<T>`, `ProducesProblem`; document transformer ile `securitySchemes` (çerez, bearer, imza başlığı neyse). OpenAPI dosyası commit edilir ve sapma testiyle korunur (proje zaten yapıyorsa ona bağlan).
-4. **Örnek yakalama:** test `HttpClient`'ına `DelegatingHandler`; çıktı `docs/api/ornekler/<dis|ic>/<operationId>/<durum>-<kisa-ad>.json` (istek: yöntem, yol, gösterilecek başlıklar, gövde; yanıt: durum, başlıklar, gövde). Değişken değerler sabitlenir ya da maskelenir (`"<guid>"`, `"<zaman>"`, `"<correlationId>"`, `"<imza>"`); çerez ve gerçek belirteç yazılmaz. Proje `docs/`'u insana ayırdıysa (Claude düzenlemez) örnekler test klasöründe durur (ör. `tests/<Entegrasyon>/ApiOrnekleri/<dis|ic>/...`). Örnek dosyaları commit edilir; sapma testi canlı yakalamayı commit edilmiş dosyayla karşılaştırır, bilinçli değişiklikte bir ortam değişkeniyle (ör. `ORNEK_GUNCELLE=1`) yenilenir.
-5. **Kapsam testi (CI kapısı):** OpenAPI'deki ve dış sözleşmedeki her işlem için kitle işareti, Türkçe özet, en az bir başarı ve bir hata örneği var; dış belgede iç işlem yok. Eksikte test adı ve eksik işlem listesiyle kırmızı.
-6. **Belge üretimi:** betik OpenAPI + örnekler (+ dış sözleşme) → `dis.md` ve `ic.md` (üretilen, git dışı). Her işlem: amaç, yetki, istek, yanıtlar tablosu, örnekler, hata kodları; dış belgede ayrıca giriş/imza adımları ve sürüm değişiklikleri (`oasdiff changelog`). Projede belge zinciri varsa (DocFX, MkDocs) bu dosyalar onun bölümü olur; yoksa Markdown + yalnız Development/Test ortamında etkileşimli sayfa (Scalar).
-7. **Dışa aktarma (istenince):** CI'da elle tetiklenen iş ya da `yayin` adımı.
-   - Word: `pandoc dis.md -o api-dis-<sürüm>.docx --toc --reference-doc=<kurum-şablonu.docx>`.
-   - PDF: Markdown → HTML → Chromium/Playwright ile PDF (LaTeX kurulumu gerekmez, Türkçe yazı tipi tarayıcıdan). Projenin ADR'si başka araç seçtiyse o önce gelir.
-   - Kanıt: çıktıda ş ğ ı İ ö ü ç doğru, kapakta sürüm + commit + tarih, içinde iç uç yok (metinde `x-kitle: iç` işlemlerinin yolu aranır).
-8. **Test platformu dosyaları (dış belgeyle birlikte üretilir; Yusuf 18.11.2026: bankalar en çok Postman kullanıyor).**
-   - **Birincil — Postman Collection v2.1** (`<urun>-dis-<sürüm>.postman_collection.json`) + ortam dosyası (`<urun>-test.postman_environment.json`: test adresi, kimlikler; anahtar ve parola değişkenleri **boş**). Her istek testten yakalanan örnek gövdeyle; özel kimlik doğrulama (imza, HMAC, belirteç alma) **istek öncesi betikte**, yalnız ortamdaki anahtarla. Her istekte test betiği: durum kodu ve yanıt şeması (örneklerden ve OpenAPI şemasından). Postman dışındaki araçlar (Insomnia, Bruno, Apidog) bu koleksiyonu içe aktarır.
-   - **İkincil — OpenAPI 3** (`<urun>-dis-<sürüm>.openapi.yaml`): yalnız dış işlemler, örnekler gömülü. Dış uçlar elle yazılmış sözleşmede tanımlıysa ayrı bir **dış OpenAPI belgesi** üretilir (iç belgeden bağımsız) ve testte sözleşmeyle karşılaştırılır. Belge 3.1 ise Postman içe aktarması pilotta denenir; sorun olursa 3.0 kopyası da üretilir.
-   - **Kanıt:** CI koleksiyonu Newman ile test ortamına karşı koşturur, tüm testler yeşil; dosyalarda sır yok (gitleaks); içinde iç uç yok. Dağıtılan dosya, CI'da çalıştığı kanıtlanan dosyadır.
-   - Başka biçim (Bruno, Insomnia dışa aktarımı) yalnız bir okuyucu isterse eklenir.
+## Güvenlik (zorunlu; atlanırsa iş bitmemiştir)
+1. **Maske izin listesiyle:** örneğe yalnız izin listesindeki başlık ve alan yazılır; listede olmayan atılır. Değişken değerler sabitlenir ya da yer tutucu olur (`<guid>`, `<timestamp>`, `<correlationId>`, `<signature>`). Yasak listesi kullanılmaz: sonradan eklenen alanı sızdırır.
+2. **Veri sentetik:** gerçek kişi, TCKN, IBAN, kart, adres yok; deterministik test verisi.
+3. **Yayımlanan test anahtarı canlıda reddedilir** ve bunu bir bekçi testi kanıtlar (ör. üretim yapılandırması belgedeki anahtar kimliğini kabul etmez). Anahtar belgede "TEST" işaretlidir.
+4. **Hata cevabı varlık sızdırmaz:** belgelenen her hata durumu için "bu cevap, yetkisi olmayana kaydın varlığını söylüyor mu?" sorusu cevaplanır (başkasının kaydı ile olmayan kayıt aynı cevabı alır).
+5. **Dış paket içerik taraması:** üretilen PDF, DOCX, Postman koleksiyonu ve dış OpenAPI metne çevrilip sır, iç yol, iç başlık, iç ana makine adı ve `localhost` için taranır (gitleaks + proje kalıpları). Depo taraması yetmez; çıktı depoya girmez.
+6. **Postman ve dış OpenAPI:** temel adres yer tutucu (`{{baseUrl}}`); anahtar değişkenleri boş ve `secret` tipli; istek öncesi betikte `console.log` yok (testle); dış OpenAPI `servers` yalnız yer tutucu.
+7. **Dış kapakta commit kimliği yok;** sözleşme sürümü ve tarih yeter. Commit yalnız iç belgede.
+
+## Kurulum (projede bir kez)
+1. **Araç onayı:** belge zinciri araçları (`pandoc` GPL-2.0+ — çıktıyı bağlamaz ama araç zincirine girer; `docfx pdf` ilk koşuda Chromium indirir; `newman` geniş bağımlılık ağacı) lisans, indirilen ikili ve sürüm sabitlemesiyle listelenir; kullanıcı onaylar. Projenin ADR'si bir araç seçtiyse o önce gelir.
+2. **`operationId` önce:** her uçta kalıcı `WithName("<Resource>_<Action>")`. Örnek klasörü, belge çapası ve Postman istek adı buna dayanır; minimal API `WithName` olmadan `operationId` üretmez.
+3. **Envanter ve kitle:** `EndpointDataSource`'tan tüm uçlar; her birine kitle önerisi, kullanıcı onaylar. İşletim uçları iç.
+4. **Tanım:** Türkçe `WithSummary`/`WithDescription`, `Produces<T>`, `ProducesProblem`; `securitySchemes` document transformer'la; iç ve dış belge ayrı adla üretilir, commit edilir, sapma testiyle korunur.
+5. **Örnek yakalama:** test `HttpClient`'ına `DelegatingHandler`; izin listesiyle maskeli istek/yanıt `ApiExamples/<external|internal>/<operationId>/<status>-<short-name>.json`. Proje `docs/`'u insana ayırdıysa klasör test projesinde. Sapma testi; bilinçli değişiklikte ortam değişkeniyle (ör. `UPDATE_API_EXAMPLES=1`) yenilenir.
+6. **Kapsam testi (CI kapısı):** `EndpointDataSource`'taki her uçta kitle, `operationId`, Türkçe özet, ≥ 1 başarı ve ≥ 1 hata örneği, açıklama dosyası; dış belgede iç uç yok, iç belgede dış uç yok. Hata üretmeyen uçlar (canlılık, sürüm) hata örneği kuralına **adıyla** istisnadır; istisna listesi testte, sessiz atlama yok.
+7. **Belge üretimi ve dışa aktarma:** `api-belge-yapisi.md`'deki bölüm şablonuyla; Word `pandoc`, PDF HTML + Chromium (ya da ADR'nin aracı); CI'da elle tetiklenen iş ya da `yayin` adımı. Kanıt: Türkçe harfler doğru, iç uç yok, içerik taraması temiz.
+8. **Postman (birincil) ve dış OpenAPI 3 (ikincil):** Postman Collection v2.1 + ortam dosyası (Güvenlik 6); özel kimlik doğrulama istek öncesi betikte; her istekte durum + şema testi. CI koleksiyonu Newman ile test ortamına karşı koşturur. OpenAPI 3.1 Postman'a aktarılamazsa 3.0 kopyası. Başka biçim yalnız bir okuyucu isterse.
 
 ## Süreçteki yeri
-- **planla:** uç nokta ekleyen ya da değiştiren görevin `Belge:` satırı "API belgesi (dış|iç) + örnek testi".
-- **uygula:** yeni uç, kitle işareti + özet + başarı ve hata örneği testleriyle biter; kapsam testi kırmızıysa bitmemiştir.
-- **incele:** işaretsiz/özetsiz/örneksiz uç, dış belgeye sızan iç uç, örnekte gerçek veri ya da sır **Önemli**; dış uçta kırıcı değişiklik sürüm artışı olmadan **Kritik**.
-- **yayin:** dış belge değiştiyse Word/PDF, Postman koleksiyonu + ortam dosyası ve dış OpenAPI üretilip sürüme eklenir.
+- **planla:** uç nokta ekleyen/değiştiren görevin `Belge:` satırı "API belgesi (dış|iç) + örnek ve açıklama".
+- **uygula:** yeni uç `operationId` + kitle + özet + açıklamalı başarı ve hata örneği + dizin satırlarıyla biter; kapsam ve dizin testleri kırmızıysa bitmemiştir.
+- **incele:** işaretsiz/özetsiz/örneksiz uç, dizinde olmayan hata kodu ya da alan, yasak listesiyle maske **Önemli**; dış pakete sızan iç uç ya da iç bilgi, örnekte gerçek veri ya da sır, varlık sızdıran hata cevabı, canlıda geçerli test anahtarı, dış uçta sürüm artışsız kırıcı değişiklik **Kritik**.
+- **yayin:** dış belge değiştiyse Word, PDF, Postman koleksiyonu + ortam dosyası ve dış OpenAPI üretilir, içerik taramasından geçer, sürüme eklenir.
