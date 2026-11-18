@@ -4,7 +4,7 @@ Karar: Yusuf, 17–18.11.2026 (`docs/yapilacaklar.md` madde 15). HTTP API sunan 
 
 ## İlkeler
 1. **İki kitle, iki belge.**
-   - **Dış belge:** bankalar, müşteriler, üçüncü taraflar. Dağıtılır; Word ve PDF yalnız bundan üretilir.
+   - **Dış belge:** bankalar, müşteriler, üçüncü taraflar. Dağıtılır; Word, PDF ve test platformu dosyaları (Postman koleksiyonu, OpenAPI) yalnız bundan üretilir.
    - **İç belge:** ekip (web/mobil istemci, işletim, yönetim uçları). Depoda ya da proje kitabında kalır, dışarı gönderilmez.
 2. **Her uç noktanın kitlesi açık.** Uç tanımında `dış` ya da `iç` işareti; OpenAPI'ye `x-kitle` uzantısı olarak yansır. İşaretsiz uç CI'da kırmızı. Dış belgeye iç uç, iç belgeye dış uç girmez.
 3. **Tanım koddan.** OpenAPI derlemede koddan üretilir (.NET 10: `Microsoft.AspNetCore.OpenApi`); her işlemde Türkçe özet ve açıklama, istek/yanıt tipleri, hata yanıtları (`ProblemDetails` + `code` + `params`), kimlik doğrulama şeması. Elle yazılmış bir dış sözleşme varsa (ör. imzalı kanal) tanım odur; örnekleri yine testten gelir.
@@ -23,9 +23,14 @@ Karar: Yusuf, 17–18.11.2026 (`docs/yapilacaklar.md` madde 15). HTTP API sunan 
    - Word: `pandoc dis.md -o api-dis-<sürüm>.docx --toc --reference-doc=<kurum-şablonu.docx>`.
    - PDF: Markdown → HTML → Chromium/Playwright ile PDF (LaTeX kurulumu gerekmez, Türkçe yazı tipi tarayıcıdan). Projenin ADR'si başka araç seçtiyse o önce gelir.
    - Kanıt: çıktıda ş ğ ı İ ö ü ç doğru, kapakta sürüm + commit + tarih, içinde iç uç yok (metinde `x-kitle: iç` işlemlerinin yolu aranır).
+8. **Test platformu dosyaları (dış belgeyle birlikte üretilir; Yusuf 18.11.2026: bankalar en çok Postman kullanıyor).**
+   - **Birincil — Postman Collection v2.1** (`<urun>-dis-<sürüm>.postman_collection.json`) + ortam dosyası (`<urun>-test.postman_environment.json`: test adresi, kimlikler; anahtar ve parola değişkenleri **boş**). Her istek testten yakalanan örnek gövdeyle; özel kimlik doğrulama (imza, HMAC, belirteç alma) **istek öncesi betikte**, yalnız ortamdaki anahtarla. Her istekte test betiği: durum kodu ve yanıt şeması (örneklerden ve OpenAPI şemasından). Postman dışındaki araçlar (Insomnia, Bruno, Apidog) bu koleksiyonu içe aktarır.
+   - **İkincil — OpenAPI 3** (`<urun>-dis-<sürüm>.openapi.yaml`): yalnız dış işlemler, örnekler gömülü. Dış uçlar elle yazılmış sözleşmede tanımlıysa ayrı bir **dış OpenAPI belgesi** üretilir (iç belgeden bağımsız) ve testte sözleşmeyle karşılaştırılır. Belge 3.1 ise Postman içe aktarması pilotta denenir; sorun olursa 3.0 kopyası da üretilir.
+   - **Kanıt:** CI koleksiyonu Newman ile test ortamına karşı koşturur, tüm testler yeşil; dosyalarda sır yok (gitleaks); içinde iç uç yok. Dağıtılan dosya, CI'da çalıştığı kanıtlanan dosyadır.
+   - Başka biçim (Bruno, Insomnia dışa aktarımı) yalnız bir okuyucu isterse eklenir.
 
 ## Süreçteki yeri
 - **planla:** uç nokta ekleyen ya da değiştiren görevin `Belge:` satırı "API belgesi (dış|iç) + örnek testi".
 - **uygula:** yeni uç, kitle işareti + özet + başarı ve hata örneği testleriyle biter; kapsam testi kırmızıysa bitmemiştir.
 - **incele:** işaretsiz/özetsiz/örneksiz uç, dış belgeye sızan iç uç, örnekte gerçek veri ya da sır **Önemli**; dış uçta kırıcı değişiklik sürüm artışı olmadan **Kritik**.
-- **yayin:** dış belge değiştiyse Word/PDF üretilip sürüme eklenir.
+- **yayin:** dış belge değiştiyse Word/PDF, Postman koleksiyonu + ortam dosyası ve dış OpenAPI üretilip sürüme eklenir.

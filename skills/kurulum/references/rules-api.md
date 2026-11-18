@@ -27,8 +27,9 @@ paths: ["**/*Endpoints*.cs", "**/Controllers/**", "**/Contract*/**", "**/openapi
 ## Belge ve dışa aktarma
 - Üretim: <betik> → `dis.md`, `ic.md` (git dışı) → <proje kitabı bölümü | yalnız Markdown + Scalar (Development/Test)>.
 - Word ve PDF yalnız dış belgeden, istenince: <CI işi adı | yayin adımı>; Word `pandoc`, PDF HTML + Chromium/Playwright <ya da ADR'nin seçtiği araç>. Kapak: ürün, kitle, sürüm, commit, tarih. Çıktı depoya girmez.
+- Test platformu dosyaları yalnız dış belgeden: Postman Collection v2.1 + ortam dosyası (anahtar boş; imza/kimlik istek öncesi betikte; her istekte durum + şema testi) birincil, örnekli dış OpenAPI 3 ikincil. CI koleksiyonu Newman ile test ortamına karşı koşturur.
 - Dış uçta kırıcı değişiklik (`oasdiff breaking`) yalnız yeni API sürümüyle; dış belgede "Değişiklikler" bölümü.
 
 ## Bitti ölçütü (uç ekleyen/değiştiren her görev)
-- Kitle işareti, Türkçe özet, başarı + hata örneği testleri yeşil; kapsam ve sapma testleri yeşil; OpenAPI dosyası ve örnekler aynı commit'te.
+- Kitle işareti, Türkçe özet, başarı + hata örneği testleri yeşil; kapsam ve sapma testleri yeşil; OpenAPI dosyası ve örnekler aynı commit'te; dış uçta Newman koşusu yeşil.
 ```
