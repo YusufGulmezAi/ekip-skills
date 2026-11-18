@@ -10,7 +10,7 @@
 ### Yığın
 - Backend: .NET 10 (LTS), <minimal API | controller>, EF Core 10 + <PostgreSQL 18 | veri tabanı>; varsayılan kiracı saat dilimi <Europe/Istanbul>
 - Mobil: Flutter <sürüm>, <Riverpod | Bloc | Provider>, <go_router | ...>
-- Sözleşme: <api/openapi.yaml>; tasarım sistemi: <ad>; bileşen kütüphanesi: <packages/<urun>_ui | lib/shared/widgets | yok>
+- API: <yok (dış API kararıyla kurulur) | dış: <kanal/yol> · iç: <yol>; kural `.claude/rules/api.md`> · Sözleşme: <api/openapi.yaml>; tasarım sistemi: <ad>; bileşen kütüphanesi: <packages/<urun>_ui | lib/shared/widgets | yok>
 - Çevrimdışı: <modüller | yok> · çakışma: <ekle-yalnız | rowversion+409> · ön paket: <birim>
 
 ### Komutlar

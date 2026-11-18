@@ -27,4 +27,5 @@
 - Hedef çerçeve `net10.0` (LTS) değil ya da `global.json` yok / `allowPrerelease: false` içermiyor.
 - Önizleme sürüm: `PackageReference` sürümünde `-preview`, `-rc`, `-beta`, `-alpha`; Dockerfile/compose'da `rc`/`beta`/`preview` etiketli imaj.
 - Günlükte interpolasyon (`$"..."`) yerine mesaj şablonu (CA2254).
+- API belgesi (`.claude/rules/api.md` varsa): yeni/değişen uçta kitle işareti (dış|iç), Türkçe özet ya da testten yakalanan başarı + hata örneği yok; dış belgeye iç uç sızıyor; örnekte gerçek kişi verisi, belirteç ya da sır. Dış uçta kırıcı değişiklik yeni API sürümü olmadan **Kritik**.
 - Zafiyetli paket: `dotnet list package --vulnerable` / NuGetAudit uyarıları.

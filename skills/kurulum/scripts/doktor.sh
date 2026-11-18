@@ -26,6 +26,7 @@ if [ -n "$(ls *.sln *.slnx *.csproj 2>/dev/null)" ] || [ -n "$(find . -maxdepth 
   [ -n "$eski" ] && printf 'UYARI     %-16s %s\n' "hedef çerçeve" "LTS dışı: $eski"
   kontrol "dotnet-counters" "dotnet-counters --version"    0 "dotnet tool install -g dotnet-counters (hata-ayikla)"
   kontrol "docker"         "docker --version"              0 "yayin: imaj üretimi"
+  kontrol "pandoc"         "pandoc --version"              0 "API dış belgesini Word'e aktarma (istenince)"
 fi
 if [ -n "$(find . -maxdepth 3 -name pubspec.yaml 2>/dev/null | head -1)" ]; then
   kontrol "flutter"        "flutter --version"             1 "flutter.dev"

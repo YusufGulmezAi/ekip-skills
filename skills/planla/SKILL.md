@@ -14,7 +14,7 @@ Amaç: işi, bağımsız doğrulanabilen ve gerektiğinde paralel yürütülebil
 3. **Tek bağlama sığar.** Bir görev bir ajanın tek oturumda bitirebileceği büyüklükte olmalı (birkaç dosya, tek modül). Büyükse böl.
 4. **Paralellik işareti.** `[P]` yalnızca başka bir paralel görevle aynı dosyalara veya aynı migration'a dokunmayan görevlere konur. Emin değilsen koyma; yanlış `[P]` çakışma üretir.
 5. **Dosya yolu değil modül adı.** Yollar plan yazıldıktan sonra değişir; görev "Tespit modülü, Kusur varlığı" gibi alan adıyla tarif edilir.
-6. **Belge etkisi.** Her görev hangi dokümanı etkilediğini söyler (karar kaydı, kullanıcı rehberi, API başvurusu) ya da "yok".
+6. **Belge etkisi.** Her görev hangi dokümanı etkilediğini söyler (karar kaydı, kullanıcı rehberi, API başvurusu) ya da "yok". Uç nokta ekleyen/değiştiren görevde: "API belgesi (dış|iç) + örnek testi".
 7. **Ekran görevi onaylı ekrana bağlıdır.** Her ekran görevi `[bağlı: ekran onayı — <ekran adı>]` taşır (onay yüzeyi profilde; varsayılan mockup); onay yoksa önce `tasarim` sahipli görev. Onaysız ekran görevi dalgaya girmez.
 8. **Test üç katman.** Veri veya yetki değiştiren her dilimde `test` sahipli görev üç katmanı sayar: birim, entegrasyon, güvenlik (kiracı/yetki senaryoları `guvenlik-testi` kataloğundan).
 9. **Veri modeli önce.** Entity veya şema değiştiren dilimin ilk görevi `[sahip: dotnet] Model önerisi`dir: alanlar (ad, tip, zorunluluk ve **neden**), ilişkiler, kısıtlar (hangi iş kuralını şemada zorluyor), kapsam dışı. Onaylanmadan migration görevi dalgaya girmez. Gerekçe: yazılmış modeli değiştirmek (migration, veri göçü, bağımlı kod) öneriyi değiştirmekten kat kat pahalıdır.

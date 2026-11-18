@@ -42,6 +42,9 @@ Mimar ana oturumdur. Ajanlar başka ajan başlatmaz, kullanıcıya soru soramaz;
 
 **Önemli:** Oturum başı hook'u ile gelen çekirdek kurallar alt ajanlara ulaşmaz (ölçüldü). Bu yüzden yazan ajanların her birinde kısa bir "Çalışma kuralları" bölümü var. Çekirdek kural değişirse `rules/cekirdek.md` ile birlikte `agents/*-gelistirici.md`, `test-yazari.md`, `belge-yazari.md` de güncellenir.
 
+## API belgeleri: dış ve iç ayrı (v0.14)
+HTTP API sunan her projede uç noktalar iki ayrı belgede: **dış** (bankalar, müşteriler, üçüncü taraflar; Word/PDF yalnız bundan, istenince) ve **iç** (ekip). Her uçta kitle işareti (`x-kitle`), Türkçe özet ve testten yakalanan başarı + hata örneği; kapsam testi eksikte kırmızı; tanım koddan üretilen OpenAPI ya da elle yazılmış dış sözleşme; örnek verisi sentetik; çıktı depoya girmez. Yöntem `belgele/references/api-belgeleri.md`, proje kuralı şablonu `kurulum/references/rules-api.md`. API'si olmayan projede kurulmaz. İlk uygulama fintech-core (karar: [docs/yapilacaklar.md](docs/yapilacaklar.md) madde 15).
+
 ## Saha dersleri: Akses ve fintech-core (v0.13)
 Kaynak ve madde numaraları: [docs/yapilacaklar.md](docs/yapilacaklar.md).
 - **Arama sütununu veri tabanı üretir (PG 17+):** `GENERATED ALWAYS AS (search_normalize_v1(<alan>)) STORED`; önleyici tohumları, migration INSERT'lerini ve `ExecuteUpdate`'i atlıyordu. SQL fonksiyonu (`pg_c_utf8`, `IMMUTABLE`) ile `TextNormalizer` aynı adımları aynı sırayla uygular; ortak `search-vectors.json` ve tüm kod noktası taraması PostgreSQL 17.11'de birebir eşit (bilerek bozulan SQL'i 4 farkla yakaladı). Fonksiyon değişirse yeni ad + `SET EXPRESSION`; bayatlık sorgusu.

@@ -1,6 +1,6 @@
 ---
 name: belgele
-description: Proje geliştirilirken dokümanları kodla birlikte oluşturur ve günceller; karar kayıtları (ADR), son kullanıcı rehberleri ve eğitim materyali (rol bazlı), geliştirici rehberi, API başvurusu, değişiklik günlüğü. USE FOR — "dokümante et", "belgele", "rehber yaz", "eğitim dokümanı", "kullanım kılavuzu", "README güncelle", "ADR yaz", "document this", "write a guide", bir özellik bittiğinde, `uygula` raporunda "Belge etkisi" satırı doluysa. DO NOT USE FOR — mevcut bir metni çevirmek, yazım veya dil düzeltmek, sohbet içinde tek seferlik açıklama, koddaki tek yorum satırı.
+description: Proje geliştirilirken dokümanları kodla birlikte oluşturur ve günceller; karar kayıtları (ADR), son kullanıcı rehberleri ve eğitim materyali (rol bazlı), geliştirici rehberi, API başvurusu, değişiklik günlüğü. USE FOR — "API belgesi", "API kitabı", "uç noktaları belgele", "API belgesini Word/PDF olarak ver", "dokümante et", "belgele", "rehber yaz", "eğitim dokümanı", "kullanım kılavuzu", "README güncelle", "ADR yaz", "document this", "write a guide", bir özellik bittiğinde, `uygula` raporunda "Belge etkisi" satırı doluysa. DO NOT USE FOR — mevcut bir metni çevirmek, yazım veya dil düzeltmek, sohbet içinde tek seferlik açıklama, koddaki tek yorum satırı.
 argument-hint: "[özellik, karar veya doküman adı]"
 ---
 
@@ -15,7 +15,7 @@ Her doküman tek bir türdedir; türleri karıştırmak hepsini kullanışsız y
 |---|---|---|---|
 | **Öğretici** (eğitim) | Yeni kullanıcı, ilk kez öğrenirken | "Saha personeli: ilk daire tespiti" | `docs/kullanici/<rol>/ogretici-*.md` |
 | **Nasıl yapılır** (rehber) | Bilen kişi, bir işi yaparken | "Geri gönderilen kusuru yeniden tespit etme" | `docs/kullanici/<rol>/nasil-*.md`, `docs/gelistirici/nasil-*.md` |
-| **Başvuru** | Bakıp kontrol ederken | API uç noktaları, durum kodları, yapılandırma | Koddan üretilir (aşağıda) |
+| **Başvuru** | Bakıp kontrol ederken | API uç noktaları, durum kodları, yapılandırma | Koddan üretilir (aşağıda); API: dış ve iç ayrı belge |
 | **Açıklama** | Neden böyle olduğunu anlamak isteyen | Karar kayıtları, mimari | `docs/kararlar/NNNN-*.md`, `docs/gelistirici/mimari.md` |
 
 Başlıklar: **karar kaydı** Bağlam / Karar / Sonuçlar / Değerlendirilen seçenekler; **öğretici** Gerekenler / numaralı adımlar / Tamamladığında; **nasıl yapılır** Ne zaman / numaralı adımlar / Sorun olursa; **changelog** Keep a Changelog (Eklendi / Değişti / Düzeltildi / Kaldırıldı). Doldurulmuş örnekler: `references/sablonlar.md`.
@@ -23,6 +23,7 @@ Başlıklar: **karar kaydı** Bağlam / Karar / Sonuçlar / Değerlendirilen se�
 ## Ne zaman yazılır
 - **Karar verildiğinde** (`sorgula`, `tasarla`, `planla` sırasında): geri alması pahalı her karar için karar kaydı. Kararı veren konuşma unutulur, kayıt kalır.
 - **Kod yazılırken**: başvuru dokümanı koddan üretilir, elle yazılmaz. .NET'te XML doküman yorumları ve OpenAPI belgesi; Flutter'da dartdoc. Elle yazılan başvuru ilk değişiklikte bayatlar.
+- **Uç nokta eklendiğinde/değiştiğinde**: API belgeleri **dış** (bankalar, müşteriler, 3. taraflar) ve **iç** (ekip) olarak ayrı tutulur; her uçta kitle işareti, Türkçe özet, testten yakalanan başarı ve hata örneği. Word/PDF yalnız dış belgeden, istenince. Yöntem: `references/api-belgeleri.md`.
 - **Yetki değiştiğinde**: `docs/yetki-matrisi.md` (rol × eylem tablosu, tek kaynak) aynı PR'da güncellenir; `guvenlik-testi` senaryoları bu matristen türetilir, matris değişmeden yetki kodu değişmez.
 - **Özellik bittiğinde** (`uygula` raporunda "Belge etkisi" doluysa): ilgili rol rehberleri ve gerekiyorsa öğretici.
 - **Yayında** (`yayin`): değişiklik günlüğü ve kullanıcıya dönük sürüm notu.
