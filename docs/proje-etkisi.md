@@ -4,6 +4,7 @@ Oturum başı hook'u bu dosyayı okur: projenin profilindeki `ekip-skills: <sür
 
 Biçim (hook ayrıştırır): başlık `## X.Y.Z`, altında tek satırlık `- ` maddeleri. Yalnız proje dosyasını değiştiren maddeler yazılır; eklentinin kendi davranış değişiklikleri (eklenti güncellenince her projede kendiliğinden geçerli) buraya girmez. Yayında yeni sürümün maddeleri bu dosyaya eklenir.
 
+
 ## 0.12.1
 - Profilde `Durum dosyası:` satırı durum yolunu belirler (hook'lar ve `devam` okur); durum dosyası başka yerdeyse satır eklenir.
 
@@ -14,10 +15,10 @@ Biçim (hook ayrıştırır): başlık `## X.Y.Z`, altında tek satırlık `- ` 
 - PostgreSQL 17+ ise arama sütunu üretilmiş sütun + `search_normalize_v1` + eşdeğerlik testi (`veri.md`).
 - `altyapi.md`: belge commit'i PR'dan önce; Windows'ta yerel bağlantı `Host=127.0.0.1`.
 
-## 0.15.0
-- `dotnet.md` test: kimlik, oran sınırlama ve kiracı çözümü HTTP üzerinden gerçek ara katmanlarla (`HttpContext` elle doldurulmaz).
-- `veri.md` göç: veri dokunan göç dolu veritabanında, satır sayısıyla sınanır; RLS'li projede dar görünürlükle yazılır.
-
 ## 0.14.0
 - HTTP API varsa `.claude/rules/api.md` (dış/iç belge, `x-audience`, `operationId`, açıklamalı örnek, güvenlik); yoksa profilde `API: yok`.
 - Profilde `ekip-skills: <sürüm>` damgası (bu uyarının kaynağı).
+
+## 0.15.0
+- `dotnet.md` test: kimlik, oran sınırlama ve kiracı çözümü HTTP üzerinden gerçek ara katmanlarla (`HttpContext` elle doldurulmaz).
+- `veri.md` göç: veri dokunan göç dolu veritabanında, satır sayısıyla sınanır; RLS'li projede dar görünürlükle yazılır.
